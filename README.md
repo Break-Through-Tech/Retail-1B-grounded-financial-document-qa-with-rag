@@ -1,121 +1,142 @@
-# AI Studio Challenge Project Title
+# Extracting Insight from Financial Documents Using RAG
 
-> 💡 **Note for the team:** This is just a template. Update the above title with your AI Studio Challenge Project name. Remove all guidance notes and example text in this template and populate this README with your own content. You can work on this README throughout AI Studio, and get feedback from your AI Studio Coach and Challenge Advisor before finalizing it.  
+This repository supports the Break Through Tech AI Studio challenge project for building a grounded financial document question-answering system with retrieval-augmented generation (RAG).
 
----
+The project focuses on answering questions from public financial filings while returning evidence-backed citations. The goal is not just to generate fluent answers, but to make the system traceable, reproducible, and careful about saying when the available documents do not support an answer.
 
-### 👥 **Team Members**
+## Project Team
 
-**Example:**
+| Name | Role | Contribution |
+| :--- | :--- | :--- |
+| SaiSandeep Kantareddy | Challenge Advisor | Project scope, evaluation guidance, milestone planning |
+| 7-Eleven AI Studio Fellows | Project Team | Implementation, experiments, analysis, final documentation |
 
-| Name             | GitHub Handle | Contribution                                                             |
-|------------------|---------------|--------------------------------------------------------------------------|
-| Taylor Nguyen    | @taylornguyen | Data exploration, visualization, overall project coordination            |
-| Jordan Ramirez   | @jramirez     | Data collection, exploratory data analysis (EDA), dataset documentation  |
-| Amina Hassan     | @aminahassan  | Data preprocessing, feature engineering, data validation                 |
-| Priya Mehta      | @pmehta       | Model selection, hyperparameter tuning, model training and optimization  |
-| Chris Park       | @chrispark    | Model evaluation, performance analysis, results interpretation           |
+The fellow roster and individual contributions should be updated as the team begins implementation.
 
----
+## Project Highlights
 
-## 🎯 **Project Highlights**
+- Builds a RAG pipeline for grounded question answering over public financial documents.
+- Uses the public FinanceBench sample as the initial benchmark dataset.
+- Compares keyword retrieval, dense retrieval, reranking, answer generation, and citation quality.
+- Evaluates the system with retrieval, answer correctness, citation support, abstention, latency, and reproducibility metrics.
+- Keeps the project educational and public-data only; no proprietary 7-Eleven data or internal systems are used.
 
-**Example:**
+## Repository Contents
 
-- Developed a machine learning model using `[model type/technique]` to address `[challenge project task]`.
-- Achieved `[key metric or result]`, demonstrating `[value or impact]` for `[host company]`.
-- Generated actionable insights to inform business decisions at `[host company or stakeholders]`.
-- Implemented `[specific methodology]` to address industry constraints or expectations.
+| Path | Purpose |
+| :--- | :--- |
+| [`Challenge-Project-Overview.md`](Challenge-Project-Overview.md) | Full challenge scope, deliverables, milestones, success criteria, and resources |
+| [`Getting-Started-for-Fellows.md`](Getting-Started-for-Fellows.md) | Program guidance for fellows using this repository |
+| [`data/README.md`](data/README.md) | Dataset provenance, validation, and loading notes |
+| [`data/financebench_merged.jsonl`](data/financebench_merged.jsonl) | Frozen public FinanceBench sample used to start the project |
+| [`requirements.txt`](requirements.txt) | Starter Python dependencies for data processing, retrieval, and evaluation |
 
----
+## Setup and Installation
 
-## 👩🏽‍💻 **Setup and Installation**
+Clone the repository:
 
-**Provide step-by-step instructions so someone else can run your code and reproduce your results. Depending on your setup, include:**
+```bash
+git clone https://github.com/Break-Through-Tech/7-Eleven-1B-grounded-financial-document-qa-with-rag.git
+cd 7-Eleven-1B-grounded-financial-document-qa-with-rag
+```
 
-* How to clone the repository
-* How to install dependencies
-* How to set up the environment
-* How to access the dataset(s)
-* How to run the notebook or scripts
+Create and activate a virtual environment:
 
----
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-## 🏗️ **Project Overview**
+Install dependencies:
 
-**Describe:**
+```bash
+pip install -r requirements.txt
+```
 
-- How this project is connected to the Break Through Tech AI Program
-- Your AI Studio host company and the project objective and scope
-- The real-world significance of the problem and the potential impact of your work
+Validate that the included dataset is readable:
 
----
+```bash
+python3 - <<'PY'
+import json
+from pathlib import Path
 
-## 📊 **Data Exploration**
+path = Path("data/financebench_merged.jsonl")
+rows = [json.loads(line) for line in path.open()]
+print(f"Loaded {len(rows)} examples")
+print(rows[0]["question"])
+PY
+```
 
-**You might consider describing the following (as applicable):**
+## Project Overview
 
-* The dataset(s) used: origin, format, size, type of data
-* Data exploration and preprocessing approaches
-* Insights from your Exploratory Data Analysis (EDA)
-* Challenges and assumptions when working with the dataset(s)
+Financial filings are long, dense, and difficult to search manually. This project asks the team to build a system that can retrieve relevant evidence from public filings and generate concise answers with citations.
 
-**Potential visualizations to include:**
+The first version should handle single-document questions over text and text extracted from tables. Multi-document reasoning, advanced table extraction, user interfaces, and model comparisons are stretch goals.
 
-* Plots, charts, heatmaps, feature visualizations, sample dataset images
+See [`Challenge-Project-Overview.md`](Challenge-Project-Overview.md) for the complete challenge description.
 
----
+## Dataset
 
-## 🧠 **Model Development**
+The starter dataset is the open-source public sample of [FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench), included at [`data/financebench_merged.jsonl`](data/financebench_merged.jsonl).
 
-**You might consider describing the following (as applicable):**
+Key details:
 
-* Model(s) used (e.g., CNN with transfer learning, regression models)
-* Feature selection and Hyperparameter tuning strategies
-* Training setup (e.g., % of data for training/validation, evaluation metric, baseline performance)
+- 150 public examples
+- JSON Lines format
+- Includes questions, reference answers, evidence passages, source document names, page numbers, and document links
+- Intended for benchmarking retrieval, grounded answering, and citation quality
 
+See [`data/README.md`](data/README.md) for provenance, checksum, schema notes, and loading instructions.
 
----
+## Model Development Plan
 
-## 📈 **Results & Key Findings**
+The expected workflow is:
 
-**You might consider describing the following (as applicable):**
+1. Profile FinanceBench and create a stable development/test split.
+2. Build a TF-IDF or BM25 retrieval baseline.
+3. Add dense retrieval with Sentence Transformers and FAISS or cosine similarity.
+4. Add reranking for the top retrieved passages.
+5. Generate answers from retrieved context with page or passage citations.
+6. Add abstention behavior when evidence is missing or weak.
+7. Evaluate retrieval, answer correctness, citation support, and latency.
 
-* Performance metrics (e.g., Accuracy, F1 score, RMSE)
-* How your model performed
-* Insights from evaluating model fairness
+## Evaluation Plan
 
-**Potential visualizations to include:**
+The final system should report results on a frozen test set. Target metrics are documented in the challenge overview and include:
 
-* Confusion matrix, precision-recall curve, feature importance plot, prediction distribution, outputs from fairness or explainability tools
+- Hit@1, Hit@5, MRR@10 or nDCG@10 for retrieval
+- Answer accuracy using normalized exact or numeric match where appropriate
+- Human-rubric accuracy for qualitative answers
+- Citation correctness and completeness
+- Unsupported-answer rate
+- Median and p95 latency
 
----
+## Results and Key Findings
 
-## 🚀 **Next Steps**
+Results will be added after the team implements the baseline, experiments with retrieval and generation approaches, and evaluates the final system on the frozen test split.
 
-**You might consider addressing the following (as applicable):**
+## Next Steps
 
-* What are some of the limitations of your model?
-* What would you do differently with more time/resources?
-* What additional datasets or techniques would you explore?
+- Confirm the development/test split and save test IDs.
+- Implement the first keyword retrieval baseline.
+- Add retrieval evaluation scripts.
+- Compare dense retrieval and reranking approaches.
+- Save experiment outputs and document error categories.
+- Prepare the final demo notebook or lightweight application.
 
----
+## License
 
-## 📝 **License**
+License terms should be confirmed with the Challenge Advisor and program staff before final publication.
 
-Specify how your project can be used by others. Choose an appropriate license and link it here (e.g., MIT, Apache 2.0). Make sure your Challenge Advisor approves of the selected license type. 
+## References
 
-**Example:**
-This project is licensed under the MIT License.
+- [FinanceBench dataset card](https://huggingface.co/datasets/PatronusAI/financebench)
+- [FinanceBench reference repository](https://github.com/patronus-ai/financebench)
+- [FinanceBench paper](https://arxiv.org/abs/2311.11944)
+- [SEC EDGAR filing search](https://www.sec.gov/search-filings)
+- [Sentence Transformers semantic search](https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html)
+- [FAISS getting started](https://github.com/facebookresearch/faiss/wiki/Getting-started)
 
----
+## Acknowledgements
 
-## 📄 **References** (Optional but encouraged)
-
-Cite relevant papers, articles, or resources that supported your project.
-
----
-
-## 🙏 **Acknowledgements** (Optional but encouraged)
-
-Thank your Challenge Advisor, host company representatives, TA, and others who supported your project.
+This project is part of the Break Through Tech AI Studio program in collaboration with 7-Eleven.
