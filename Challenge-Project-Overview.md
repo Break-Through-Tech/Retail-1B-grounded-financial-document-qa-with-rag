@@ -1,147 +1,193 @@
----
-
-> ## Challenge Advisor: Update & Finalize Your Project Overview
->
-> > 💡 **These grey text instructions are just for you, the team's Challenge Advisor; please delete them once you have completed the steps below.**
->
-> We've pre-populated this Challenge Project Overview page — which is what will be shared with your Break Through Tech student team in August — using the details from your submission form. You should have received an email inviting you to join this repo as a Collaborator, enabling you to add files and make edits.
-> 
-> In order for your project to be finalized and assigned to a team, please:
-> 1. **Review all sections below** and update or expand any content as needed, making sure to address the SME Feedback in the section immediately below. Look for square brackets to find the places below that require additional inputs from you (e.g., "About [Company / Org Name]").
-> 2. **Add your dataset** to the [data folder](data) in this repo.
-> 3. **Close the Issue assigned to you in this repo** to let us know that you have made your edits and the overview page is ready for final review. You can do this by going to the _Issues_ tab in the top left section of the menu above, add a comment that says "CA review complete", and click the button to Close the Issue. 
->
-> If you're unfamiliar with how to edit a page like this in GitHub, check out [this tutorial](https://ubc-lib-geo.github.io/gis-workshop-waml-template/content/handson/edit-readme.html) for a quick overview (start with step 2 and only edit this page), and [this guide](https://ubc-lib-geo.github.io/gis-workshop-waml-template/content/markdown.html) on how to use Markdown to compose text.
->
->
-> ❌ Remember that this is a public repo. Do NOT include: Proprietary data, PII, API keys, credentials, or anything confidential.
-
----
-## 📋 BTT Internal Evaluation Notes
-
-| Check                       | Status | Notes |
-|-----------------------------|--------|-------|
-| Python Compatibility         | 🟢  | The tech stack focuses on Python-compatible tools and libraries for NLP and RAG, ensuring alignment with students' skill sets. |
-| Data Readiness               | 🟢  | The public financial documents are accessible and under 1GB, making them readily usable with minimal preparation. This aligns with the accessibility requirement for students. |
-| Resource Check               | 🟢  | The project uses free-tier tools such as Google Colab, ensuring all students have access to the necessary resources without specialized hardware or software constraints. |
-
-**Student Fit Score:** 8/10  
-**Technical Depth Score:** 7/10  
-**Overall Recommendation:** REVISE
-
-**Advisor Feedback Draft:**
-The proposal makes excellent use of existing public data, ensuring it taps into a real-world scenario. However, a clearer definition of the evaluation process is needed to ensure that the model's performance can be quantitatively assessed against industry benchmarks. Additionally, providing explicit examples of the types of financial questions the system is expected to handle would enhance clarity. I recommend focusing on these aspects as critical adjustments to bolster the project’s robustness.
-
----
-
 # Extracting Insight from Financial Documents Using RAG
 
-**Company / Org:** 7-11  
-**Challenge Advisor:** SaiSandeep Kantareddy, saisandeep.kantareddy@gmail.com      
-**AI Coach:** Srihari Kamath, srihari.kamath@breakthroughtech.org   
-**Program:** Break Through Tech AI Studio - Fall 2026
+- **Company / Org:** 7-Eleven
+- **Challenge Advisor:** SaiSandeep Kantareddy, saisandeep.kantareddy@gmail.com
+- **AI Coach:** Srihari Kamath, srihari.kamath@breakthroughtech.org
+- **Program:** Break Through Tech AI Studio — Fall 2026
 
-----
+---
 
-## 🏢 About 7-11
+## 🏢 About 7-Eleven
 
-7-11 is a leading convenience store chain specializing in providing a wide variety of food, beverages, and daily essentials. Our focus is on enhancing customer experience while efficiently managing our retail operations.
+7-Eleven, Inc. is a convenience retailer headquartered in Irving, Texas. Its family of brands includes 7-Eleven, Speedway, Stripes, Laredo Taco Company, and Raise the Roost Chicken & Biscuits. The company focuses on fast, personalized convenience across stores, food and beverage offerings, loyalty programs, fuel, and delivery services. Learn more on the [7-Eleven company overview](https://www.corp.7-eleven.com/corp/about).
 
-----
+This Challenge Project is an educational, public-data project. It does not use or represent proprietary 7-Eleven data, internal systems, or investment advice.
+
+---
 
 ## 🎯 The Challenge
 
 ### Project Summary
-In this project, you will use public financial documents, including SEC filings and earnings call transcripts, and retrieval-augmented generation (RAG), semantic search, reranking, and automated evaluation techniques to build a system that answers financial questions with grounded citations from source documents. This will help our company address the business problem of extracting reliable insights from long, unstructured documents quickly and accurately.
+
+Financial filings are long, dense, and difficult to search manually. In this project, the team will build a retrieval-augmented generation (RAG) system that answers questions about public financial documents and supports each answer with traceable evidence from the source.
+
+The team will ingest and chunk documents, compare keyword and embedding-based retrieval, add a reranking step, generate answers with citations, and evaluate the complete system. The result should be a reproducible reference implementation that helps a user find reliable facts more quickly while reducing unsupported or hallucinated answers.
+
+The system should handle questions such as:
+
+- **Direct extraction:** What was a company's capital expenditure in a specified fiscal year?
+- **Comparison:** How did a metric such as revenue, debt, or operating margin change year over year?
+- **Calculation:** What percentage of revenue was spent on research and development?
+- **Evidence synthesis:** Based on the filing, what factors explain a reported change?
+- **Insufficient evidence:** Can the system decline to answer when the indexed documents do not support a response?
+
+The required scope is single-document questions over text and text extracted from tables. Multi-document reasoning and advanced table extraction are stretch goals.
+
+### Deliverables
+
+By the end of the challenge, the repository should include:
+
+1. A documented data-ingestion and preprocessing workflow.
+2. A keyword-search baseline and at least one dense or hybrid retrieval approach.
+3. A RAG pipeline that returns an answer, document identifier, and page or passage citation.
+4. A repeatable evaluation harness with a frozen test split and saved results.
+5. Error analysis covering retrieval misses, calculation errors, unsupported claims, and citation failures.
+6. Setup instructions, architecture documentation, and a final demo notebook or lightweight application.
 
 ### Success Criteria
-Success will be measured using retrieval and answer-quality metrics such as top-k retrieval accuracy, answer relevance, citation correctness, and groundedness/faithfulness to the source documents. A successful outcome by December would be a reproducible system that can answer financial questions from long documents with accurate source citations and clearly outperform a simple keyword-search or baseline retrieval approach.
+
+Establish the exact train/development/test split and baseline during September, before tuning. Keep at least 30 of the 150 FinanceBench examples as a frozen test set. Where possible, split by source document so that questions about the same filing do not appear in both development and test sets.
+
+Report all results on the same frozen test set. A successful final system should:
+
+- Achieve **Hit@5 of at least 70%** for retrieving a gold-evidence passage and improve Hit@5 by **at least 10 percentage points** over the keyword baseline.
+- Achieve **answer accuracy of at least 55%**, using normalized exact or numeric match where applicable and a documented human rubric for qualitative answers.
+- Achieve **citation correctness of at least 85%**, measured as the percentage of cited passages that support the associated answer.
+- Keep the **unsupported-answer rate at or below 10%**. When evidence is missing or below a tuned confidence threshold, the system should state that it cannot answer from the available documents.
+- Be reproducible from a fresh environment using documented commands, fixed random seeds, version-constrained dependencies, and saved evaluation outputs.
+
+These thresholds are initial targets, not guarantees. If a target proves infeasible, the final report must explain why with quantitative evidence and error analysis. In addition to the headline criteria, report MRR@10 or nDCG@10, answer accuracy by question type, latency, and the number of model/API calls per question.
 
 ### Stretch Goals
-Stretch goals could include support for tables in filings, better handling of multi-document questions, comparison of open-source versus API-based models, lightweight abstention when evidence is weak, and a simple user interface for exploring answers and citations.
+
+- Improve retrieval from tables while preserving row and column context.
+- Support questions requiring evidence from multiple filings.
+- Compare an open-source model with an API-based model under the same evaluation protocol.
+- Calibrate an abstention threshold and plot the coverage-versus-accuracy trade-off.
+- Add a small user interface for viewing answers, highlighted evidence, and pipeline traces.
 
 ### Project Milestones
 
-Use these milestones to guide your work. Your team will create a **GitHub Projects board** to track tasks within each milestone.
+Use these milestones to guide the work. The team will create a **GitHub Projects board** to track tasks and acceptance criteria within each milestone.
 
-| Month | Milestone | Key Activities |
-| :--- | :--- | :--- |
-| September | [TBD Title] | Define scope, select public datasets, preprocess documents, build a baseline retrieval pipeline, and establish evaluation criteria. |
-| October | [TBD Title] | Implement the full RAG pipeline with chunking, embedding-based retrieval, reranking, answer generation, and source citation. |
-| November | [TBD Title] | Improve answer quality through prompt and retrieval tuning, run comparative evaluations against the baseline, perform error analysis, and prepare final demo and documentation. |
+| Month | Milestone | Key Activities | Exit Criteria |
+| :--- | :--- | :--- | :--- |
+| September | **Scope, Data, and Baseline** | Profile FinanceBench; define the document and question scope; create a document-level development/test split; parse and chunk source material; implement a TF-IDF or BM25 baseline; define metric code and experiment logging. | Reproducible data pipeline, frozen test IDs, keyword baseline results, and documented risks. |
+| October | **Grounded RAG Prototype** | Implement dense retrieval, a vector index, retrieve-and-rerank, answer generation, citation formatting, and insufficient-evidence behavior; compare configurations on the development set. | End-to-end pipeline returns answers with citations; automated retrieval and answer evaluation runs successfully. |
+| November | **Evaluation, Hardening, and Demo** | Tune only on development data; evaluate once on the frozen test set; perform error and cost/latency analysis; improve documentation; prepare the final demo and presentation. | Final metrics and error analysis are saved; setup is reproducible; demo and project report are ready. |
 
 ---
 
 ## 📊 Dataset
 
-**Name and Source:** Public financial documents from SEC EDGAR and FinanceBench dataset  
-**Format:** Text and JSON  
-**Size:** under 1gb  
-**Location:** https://www.sec.gov/search-filings, https://huggingface.co/datasets/PatronusAI/financebench (Primary benchmark dataset: FinanceBench. Source documents can be supplemented with publicly available SEC filings from EDGAR)
+- **Primary dataset:** [FinanceBench on Hugging Face](https://huggingface.co/datasets/PatronusAI/financebench)
+- **Reference repository and source PDFs:** [Patronus AI FinanceBench](https://github.com/patronus-ai/financebench)
+- **Optional supplemental source:** [SEC EDGAR filing search](https://www.sec.gov/search-filings)
+- **Format:** JSON Lines containing questions, gold answers, evidence passages, metadata, and source-document links; source filings are generally PDF, HTML, or text
+- **Size:** The included open-source benchmark file is approximately 958 KB and contains 150 examples; any curated document collection must remain under 1 GB
+- **Repository location:** [`data/financebench_merged.jsonl`](data/financebench_merged.jsonl)
 
 ### Key Details
-- [TBD]
+
+- Each row has a stable question ID plus company, filing, period, question, gold answer, justification, evidence passage(s), page number(s), and source URL.
+- The questions include information extraction, numerical reasoning, and logical reasoning over 10-K, 10-Q, 8-K, and earnings materials.
+- The included 150-example file is the complete **public sample**, not the full 10,231-question FinanceBench corpus described by the benchmark authors.
+- The JSONL already contains gold evidence text, so the team can build an initial retrieval corpus without downloading every PDF. Source filings may be added selectively for realistic document parsing and page-level citations.
+- Clean document text while preserving company, filing period, document type, source URL, page number, section, and table context as chunk metadata.
+- Do not manually correct or tune against frozen test answers. Document any unavailable or changed source link and retain the benchmark evidence as the reproducible reference.
+- If downloading additional filings programmatically, follow the [SEC's EDGAR API guidance](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), identify the client with an appropriate User-Agent, and respect SEC access policies.
+- See [`data/README.md`](data/README.md) for provenance, validation, and loading instructions.
 
 ---
 
 ## 🛠️ Suggested Approach
 
-**ML Problem Type:** NLP
+**ML Problem Type:** Natural language processing, information retrieval, and large-language-model question answering
 
-**Recommended Libraries:**
-- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
+### Recommended Workflow
 
-**Evaluation Metrics:**
-- Accuracy, Precision/Recall, BLEU score
+1. **Profile and split the data:** Inspect question and document types; create stable development and test IDs, preferably grouped by `doc_name`.
+2. **Build the baseline:** Index chunks with `TfidfVectorizer` or BM25 and retrieve the top *k* passages.
+3. **Add semantic retrieval:** Embed queries and chunks with a pretrained Sentence Transformers model; use cosine similarity or FAISS for top-*k* search.
+4. **Rerank:** Score the retrieved candidates with a cross-encoder and preserve retrieval scores and metadata.
+5. **Generate grounded answers:** Instruct the language model to answer only from retrieved context, show calculations, cite source/page, and abstain when evidence is insufficient.
+6. **Evaluate by stage:** Evaluate retrieval independently before answer generation; then evaluate answer correctness, citation support, abstention, latency, and cost.
+7. **Analyze errors:** Label failures by parsing, chunking, retrieval, reranking, reasoning/calculation, generation, and citation.
+
+### Recommended Libraries
+
+- `pandas` and `numpy` for dataset processing and analysis
+- `scikit-learn` for the TF-IDF baseline and metric utilities
+- `sentence-transformers` for embeddings and cross-encoder reranking
+- `faiss-cpu` for local vector search (or a simple in-memory cosine-similarity index for the initial corpus)
+- `pypdf` and `beautifulsoup4` for optional PDF/HTML parsing
+- `pytest` for deterministic pipeline tests
+- `jupyter` or Google Colab for exploration and demos
+- An instructor-approved LLM SDK or a local Hugging Face model for answer generation; never commit API keys
+
+### Evaluation Metrics
+
+| Layer | Required Metrics | What They Measure |
+| :--- | :--- | :--- |
+| Retrieval | Hit@1, Hit@5, MRR@10 or nDCG@10 | Whether gold evidence is found and how highly it is ranked |
+| Answer | Exact match / normalized numeric match; rubric-based accuracy for qualitative answers | Whether the final answer matches the reference, including units and direction |
+| Citation | Citation correctness and citation completeness | Whether cited evidence supports the answer and whether major claims are cited |
+| Safety | Unsupported-answer rate; answerable/unanswerable abstention precision and recall | Whether the system avoids inventing answers when evidence is weak |
+| Operations | Median and p95 latency; model/API calls per question | Whether quality improvements have acceptable runtime and resource cost |
+
+BLEU is not recommended as the primary answer metric because valid financial answers can be short, numeric, or phrased differently from the reference.
 
 ---
 
 ## 📚 Resources to Get Started
 
-The following resources will help your team understand the problem space and potential technical approaches for this project:
+### Background Reading
 
-**Background Reading:**
-- [e.g., Link to an article or blog post about the problem domain]
-- [e.g., Link to an industry report or case study]
+- [FinanceBench paper: A New Benchmark for Financial Question Answering](https://arxiv.org/abs/2311.11944)
+- [FinanceBench dataset card](https://huggingface.co/datasets/PatronusAI/financebench)
+- [SEC EDGAR filing search](https://www.sec.gov/search-filings)
 
-**Technical Tutorials:**
-- [e.g., Link to a free tutorial on the ML technique(s) involved]
-- [e.g., Link to documentation for a key library or tool]
+### Technical Tutorials and Documentation
 
-**Code Examples:**
-- [e.g., Link to a relevant GitHub repo]
-- [e.g., Link to a sample implementation or starter code]
+- [Sentence Transformers: Semantic Search](https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html)
+- [Sentence Transformers: Retrieve & Re-Rank](https://www.sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html)
+- [Sentence Transformers: Information Retrieval Evaluation](https://www.sbert.net/docs/package_reference/sentence_transformer/evaluation.html)
+- [scikit-learn: Working with Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
+- [FAISS: Getting Started](https://github.com/facebookresearch/faiss/wiki/Getting-started)
 
-**Other:**
-- [Links to any additional resources — e.g., papers, videos, podcasts, etc.]
+### Code Examples
 
-*Feel free to explore beyond these, and share anything interesting you find with me!*
+- [FinanceBench reference repository](https://github.com/patronus-ai/financebench)
+- [Sentence Transformers retrieve-and-rerank examples](https://github.com/huggingface/sentence-transformers/tree/master/examples/sentence_transformer/applications/retrieve_rerank)
+
+Feel free to explore beyond these resources and share useful findings with the team.
 
 ---
 
 ## 🤝 How We'll Work Together
 
-**Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
+**Official check-ins:** During the biweekly 45-minute AI Studio Lab Section meeting block (second and fourth week of each month).
 
- **Other ways to reach out to me with questions:** 
-* [e.g., Your team's channel within Break Through Tech’s Discord space]
-* [e.g., Email; please copy your teammates and AI Studio Coach]
-* [e.g., Request a team check-in on Zoom]
-* [Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.]
+**Questions between check-ins:** Email the Challenge Advisor and copy all teammates and the AI Studio Coach so decisions remain visible to the full team. Group related questions, include links to the relevant issue or experiment, and allow up to two business days for a response. Use the team's Break Through Tech communication channel for routine coordination. For urgent program or access issues, contact the AI Studio Coach.
 
-> 💡 **Challenge Advisor: Please update the above based on your availability and preference. If you are not able to answer questions or meet with fellows outside of the biweekly Lab Section check-ins, simply write in "N/A (only available during the official check-in times)"**
+**Recommended free coding and collaboration tools:**
 
-**Recommended free coding / collaboration tools**
-* […]
-* […]
+- GitHub Issues and GitHub Projects for tasks, decisions, and milestone tracking
+- GitHub pull requests for reviewable code and documentation changes
+- Google Colab for shared experiments that do not require local setup
+- Google Drive or the program-approved shared workspace for non-code collaboration
+
+Do not place API keys, credentials, proprietary information, or personal data in the public repository. Store secrets in environment variables or the notebook platform's secret manager.
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Review this overview document** and note any questions for our first meeting
-2. **Begin reviewing the dataset** using the link above
-3. **Read the GitHub Projects documentation** [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
+1. Review this overview and [`Getting-Started-for-Fellows.md`](Getting-Started-for-Fellows.md); record questions for the first meeting.
+2. Read [`data/README.md`](data/README.md), load the included JSONL file, and inspect the distribution of documents, question types, and evidence pages.
+3. Create the GitHub Projects board and issues for the September exit criteria.
+4. Agree on stable development and test IDs before tuning any retrieval or generation component.
+5. Run a minimal baseline that retrieves evidence for a small set of questions and save the results.
 
 I’m excited to work with you!
 
@@ -149,4 +195,4 @@ I’m excited to work with you!
 
 ## ❓ Questions?
 
-Please bring any questions to our first meeting during the week of August 24th (Break Through Tech’s Bridge to Studio - Session C). 
+Please bring questions to our first meeting during the week of August 24, 2026 (Break Through Tech's Bridge to Studio — Session C), or use the communication process above.
