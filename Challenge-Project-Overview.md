@@ -4,6 +4,8 @@
 
 **AI Coach:** Alexandra Ladyzhensky, alexandra.ladyzhensky@breakthroughtech.org
 
+**Program Manager:** Manny Golden, manny.golden@breakthroughtech.org
+
 **Program:** Break Through Tech AI Studio - Fall 2026
 
 ---
