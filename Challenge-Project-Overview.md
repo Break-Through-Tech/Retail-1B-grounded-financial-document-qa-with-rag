@@ -1,14 +1,16 @@
 # Extracting Insight from Financial Documents Using RAG
 
-## 🎯 The Challenge
-
-### Project Summary 
 **Challenge Advisor:** SaiSandeep Kantareddy, saisandeep.kantareddy@gmail.com
 
 **AI Coach:** Alexandra Ladyzhensky, alexandra.ladyzhensky@breakthroughtech.org
 
 **Program:** Break Through Tech AI Studio - Fall 2026
 
+---
+
+## 🎯 The Challenge
+
+### Project Summary 
 Financial filings are long, dense, and difficult to search manually. In this project, the team will build a retrieval-augmented generation (RAG) system that answers questions about public financial documents and supports each answer with traceable evidence from the source.
 
 The team will ingest and chunk documents, compare keyword and embedding-based retrieval, add a reranking step, generate answers with citations, and evaluate the complete system. The result should be a reproducible reference implementation that helps a user find reliable facts more quickly while reducing unsupported or hallucinated answers.
