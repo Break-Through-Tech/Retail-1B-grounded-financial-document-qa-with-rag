@@ -1,23 +1,13 @@
 # Extracting Insight from Financial Documents Using RAG
 
-- **Company / Org:** 7-Eleven
-- **Challenge Advisor:** SaiSandeep Kantareddy, saisandeep.kantareddy@gmail.com
-- **AI Coach:** Srihari Kamath, srihari.kamath@breakthroughtech.org
-- **Program:** Break Through Tech AI Studio — Fall 2026
-
----
-
-## 🏢 About 7-Eleven
-
-7-Eleven, Inc. is a convenience retailer headquartered in Irving, Texas. Its family of brands includes 7-Eleven, Speedway, Stripes, Laredo Taco Company, and Raise the Roost Chicken & Biscuits. The company focuses on fast, personalized convenience across stores, food and beverage offerings, loyalty programs, fuel, and delivery services. Learn more on the [7-Eleven company overview](https://www.corp.7-eleven.com/corp/about).
-
-This Challenge Project is an educational, public-data project. It does not use or represent proprietary 7-Eleven data, internal systems, or investment advice.
-
----
-
 ## 🎯 The Challenge
 
-### Project Summary
+### Project Summary 
+**Challenge Advisor:** SaiSandeep Kantareddy, saisandeep.kantareddy@gmail.com
+
+**AI Coach:** Alexandra Ladyzhensky, alexandra.ladyzhensky@breakthroughtech.org
+
+**Program:** Break Through Tech AI Studio - Fall 2026
 
 Financial filings are long, dense, and difficult to search manually. In this project, the team will build a retrieval-augmented generation (RAG) system that answers questions about public financial documents and supports each answer with traceable evidence from the source.
 
