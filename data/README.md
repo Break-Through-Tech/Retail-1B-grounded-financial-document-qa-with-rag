@@ -44,3 +44,33 @@ sha256sum data/financebench_merged.jsonl
 The benchmark rows include evidence text and `doc_link` values. The source PDFs are also available from the [FinanceBench reference repository](https://github.com/patronus-ai/financebench/tree/main/pdfs). Download only the documents needed for the agreed project scope and retain document name, page number, period, and source URL as chunk metadata.
 
 Review and follow the upstream dataset terms and citation guidance before redistributing or publishing derived artifacts. Do not add proprietary documents, credentials, or personal information to this public repository.
+
+
+Updates after preparing data:
+
+## Processed data (data/processed/)
+
+The raw `financebench_merged.jsonl` sample is processed by 
+`prepare_financebench.ipynb` into a set of derived files used by 
+the RAG pipeline:
+
+- **Chunking**: Evidence pages are deduplicated across questions and 
+  stored as one chunk per unique (doc_name, page_number) pair, 
+  preserving company, doc_type, doc_period, gics_sector, page 
+  number, and source doc_link as metadata (`corpus_pages.jsonl`).
+- **Eval set**: Questions and gold answers are kept separate from 
+  the corpus, each linked to its gold evidence page(s) for 
+  retrieval scoring (`eval_questions.jsonl`).
+- **Train/test split**: Documents (not individual questions) are 
+  randomly assigned to a test or dev group using a fixed seed (42), 
+  so no filing appears in both groups. The test group is expanded 
+  until it covers at least 30 questions. This split is saved to 
+  `test_ids.json` and is frozen — it should not be regenerated or 
+  tuned against until final evaluation.
+- **Manifest**: `docs_manifest.csv` lists each unique source filing 
+  with its metadata and original PDF link, for future use if full 
+  filings are added beyond the sampled evidence pages.
+
+To regenerate these files, run `prepare_financebench.ipynb` from a 
+fresh clone with `requirements.txt` installed. Re-running with the 
+same seed reproduces the identical split.

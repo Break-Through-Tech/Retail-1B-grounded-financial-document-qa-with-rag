@@ -1,0 +1,467 @@
+{
+  "method": "tfidf_word_unigram",
+  "k": 5,
+  "corpus_page_count": 168,
+  "test_question_count": 32,
+  "hits": 20,
+  "hit_at_k": 0.625,
+  "results": [
+    {
+      "id": "financebench_id_00206",
+      "gold_evidence_pages": [
+        "JPMORGAN_2022_10K_p2"
+      ],
+      "retrieved_page_ids": [
+        "CVSHEALTH_2022_10K_p173",
+        "BESTBUY_2024Q2_10Q_p17",
+        "AMCOR_2023_10K_p63",
+        "CVSHEALTH_2022_10K_p172",
+        "AMERICANEXPRESS_2022_10K_p44"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_00215",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p22"
+      ],
+      "retrieved_page_ids": [
+        "VERIZON_2022_10K_p22",
+        "3M_2022_10K_p24",
+        "BESTBUY_2023_10K_p50",
+        "JPMORGAN_2021Q1_10Q_p5",
+        "VERIZON_2022_10K_p55"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_00216",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p55"
+      ],
+      "retrieved_page_ids": [
+        "CVSHEALTH_2022_10K_p173",
+        "BOEING_2022_10K_p112",
+        "CVSHEALTH_2022_10K_p172",
+        "BESTBUY_2024Q2_10Q_p19",
+        "VERIZON_2022_10K_p22"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_00394",
+      "gold_evidence_pages": [
+        "JPMORGAN_2022Q2_10Q_p20"
+      ],
+      "retrieved_page_ids": [
+        "3M_2022_10K_p24",
+        "AMD_2022_10K_p47",
+        "COCACOLA_2017_10K_p73",
+        "AMCOR_2023Q4_EARNINGS_p11",
+        "AMCOR_2023_10K_p49"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_00540",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p129",
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_page_ids": [
+        "AES_2022_10K_p131",
+        "CVSHEALTH_2022_10K_p173",
+        "AES_2022_10K_p129",
+        "AMD_2022_10K_p11",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_00552",
+      "gold_evidence_pages": [
+        "MICROSOFT_2023_10K_p59"
+      ],
+      "retrieved_page_ids": [
+        "ULTABEAUTY_2023Q4_EARNINGS_p1",
+        "AMERICANEXPRESS_2022_10K_p44",
+        "VERIZON_2022_10K_p76",
+        "3M_2022_10K_p26",
+        "AMCOR_2020_10K_p49"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_00566",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p76"
+      ],
+      "retrieved_page_ids": [
+        "ULTABEAUTY_2023Q4_EARNINGS_p1",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2",
+        "VERIZON_2022_10K_p76",
+        "AMERICANEXPRESS_2022_10K_p97",
+        "VERIZON_2022_10K_p55"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_00705",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "retrieved_page_ids": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1",
+        "CVSHEALTH_2022_10K_p173",
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "AMERICANEXPRESS_2022_10K_p44",
+        "FOOTLOCKER_2022_8K_dated_2022-08-19_p1"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_00839",
+      "gold_evidence_pages": [
+        "FOOTLOCKER_2022_8K_dated_2022-08-19_p1"
+      ],
+      "retrieved_page_ids": [
+        "CVSHEALTH_2022_10K_p172",
+        "CVSHEALTH_2022_10K_p173",
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2",
+        "JOHNSON_JOHNSON_2023_8K_dated-2023-08-30_p3"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_00859",
+      "gold_evidence_pages": [
+        "VERIZON_2021_10K_p84"
+      ],
+      "retrieved_page_ids": [
+        "VERIZON_2021_10K_p84",
+        "VERIZON_2021_10K_p62",
+        "AMERICANEXPRESS_2022_10K_p44",
+        "VERIZON_2022_10K_p76",
+        "BESTBUY_2024Q2_10Q_p17"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_00882",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "retrieved_page_ids": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1",
+        "PEPSICO_2022_10K_p61",
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "JPMORGAN_2021Q1_10Q_p5",
+        "AMERICANEXPRESS_2022_10K_p97"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_01319",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_page_ids": [
+        "AES_2022_10K_p131",
+        "AMCOR_2023Q2_10Q_p14",
+        "ACTIVISIONBLIZZARD_2019_10K_p69",
+        "AMD_2022_10K_p47",
+        "CVSHEALTH_2022_10K_p173"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_01482",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-05_p3"
+      ],
+      "retrieved_page_ids": [
+        "PEPSICO_2023_8K_dated-2023-05-05_p3",
+        "FOOTLOCKER_2022_8K_dated-2022-05-20_p1",
+        "PEPSICO_2023_8K_dated-2023-05-30_p1",
+        "PEPSICO_2022_10K_p61",
+        "PEPSICO_2023Q1_EARNINGS_p0"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_01928",
+      "gold_evidence_pages": [
+        "AMCOR_2023Q4_EARNINGS_p11"
+      ],
+      "retrieved_page_ids": [
+        "BESTBUY_2024Q2_10Q_p19",
+        "AMCOR_2023Q4_EARNINGS_p11",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p1",
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "AMCOR_2022_8K_dated-2022-07-01_p1"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_01930",
+      "gold_evidence_pages": [
+        "AMCOR_2023Q4_EARNINGS_p9"
+      ],
+      "retrieved_page_ids": [
+        "3M_2022_10K_p24",
+        "AMCOR_2023Q4_EARNINGS_p9",
+        "JOHNSON_JOHNSON_2022_10K_p27",
+        "AMCOR_2022_8K_dated-2022-07-01_p1",
+        "Pfizer_2023Q2_10Q_p37"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_01935",
+      "gold_evidence_pages": [
+        "AMCOR_2022_8K_dated-2022-07-01_p1"
+      ],
+      "retrieved_page_ids": [
+        "AMCOR_2022_8K_dated-2022-07-01_p1",
+        "Pfizer_2023Q2_10Q_p37",
+        "BESTBUY_2024Q2_10Q_p16",
+        "BESTBUY_2024Q2_10Q_p19",
+        "AMCOR_2023_10K_p49"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_02024",
+      "gold_evidence_pages": [
+        "VERIZON_2021_10K_p62",
+        "VERIZON_2021_10K_p93"
+      ],
+      "retrieved_page_ids": [
+        "BESTBUY_2024Q2_10Q_p17",
+        "BESTBUY_2024Q2_10Q_p16",
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2021_10K_p93",
+        "VERIZON_2022_10K_p55"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_03473",
+      "gold_evidence_pages": [
+        "COCACOLA_2017_10K_p73",
+        "COCACOLA_2017_10K_p75"
+      ],
+      "retrieved_page_ids": [
+        "COCACOLA_2022_10K_p62",
+        "COCACOLA_2021_10K_p61",
+        "COCACOLA_2017_10K_p75",
+        "COCACOLA_2017_10K_p73",
+        "AMERICANEXPRESS_2022_10K_p43"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_03531",
+      "gold_evidence_pages": [
+        "NIKE_2019_10K_p53"
+      ],
+      "retrieved_page_ids": [
+        "NIKE_2019_10K_p53",
+        "AMCOR_2020_10K_p49",
+        "NIKE_2021_10K_p60",
+        "AMCOR_2023_10K_p51",
+        "3M_2022_10K_p49"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_03849",
+      "gold_evidence_pages": [
+        "MGMRESORTS_2020_10K_p64",
+        "MGMRESORTS_2020_10K_p66"
+      ],
+      "retrieved_page_ids": [
+        "MGMRESORTS_2022Q4_EARNINGS_p13",
+        "MGMRESORTS_2022Q4_EARNINGS_p12",
+        "3M_2022_10K_p51",
+        "3M_2018_10K_p59",
+        "NIKE_2023_10K_p61"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_04171",
+      "gold_evidence_pages": [
+        "MGMRESORTS_2018_10K_p56"
+      ],
+      "retrieved_page_ids": [
+        "MGMRESORTS_2022Q4_EARNINGS_p12",
+        "MGMRESORTS_2022Q4_EARNINGS_p13",
+        "MGMRESORTS_2022Q4_EARNINGS_p2",
+        "MGMRESORTS_2022Q4_EARNINGS_p3",
+        "MGMRESORTS_2020_10K_p64"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_04209",
+      "gold_evidence_pages": [
+        "COSTCO_2021_10K_p37"
+      ],
+      "retrieved_page_ids": [
+        "COSTCO_2021_10K_p37",
+        "AMCOR_2020_10K_p49",
+        "AMERICANWATERWORKS_2022_10K_p80",
+        "3M_2022_10K_p49",
+        "3M_2023Q2_10Q_p4"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_04254",
+      "gold_evidence_pages": [
+        "AMERICANWATERWORKS_2021_10K_p85",
+        "AMERICANWATERWORKS_2021_10K_p87"
+      ],
+      "retrieved_page_ids": [
+        "3M_2018_10K_p59",
+        "AMCOR_2023Q4_EARNINGS_p11",
+        "BESTBUY_2023_10K_p41",
+        "AMERICANWATERWORKS_2021_10K_p85",
+        "3M_2022_10K_p51"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_04302",
+      "gold_evidence_pages": [
+        "NIKE_2018_10K_p45"
+      ],
+      "retrieved_page_ids": [
+        "NIKE_2023_10K_p61",
+        "NIKE_2021_10K_p58",
+        "COCACOLA_2022_10K_p62",
+        "COCACOLA_2021_10K_p61",
+        "NIKE_2018_10K_p45"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_04660",
+      "gold_evidence_pages": [
+        "BLOCK_2016_10K_p67"
+      ],
+      "retrieved_page_ids": [
+        "AMCOR_2020_10K_p49",
+        "AMCOR_2023_10K_p51",
+        "GENERALMILLS_2020_10K_p49",
+        "3M_2022_10K_p49",
+        "LOCKHEEDMARTIN_2020_10K_p68"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_04700",
+      "gold_evidence_pages": [
+        "MICROSOFT_2016_10K_p51"
+      ],
+      "retrieved_page_ids": [
+        "CVSHEALTH_2022_10K_p173",
+        "BESTBUY_2024Q2_10Q_p19",
+        "3M_2022_10K_p47",
+        "BESTBUY_2024Q2_10Q_p17",
+        "NIKE_2018_10K_p45"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_04784",
+      "gold_evidence_pages": [
+        "WALMART_2019_10K_p47"
+      ],
+      "retrieved_page_ids": [
+        "WALMART_2018_10K_p56",
+        "WALMART_2020_10K_p50",
+        "COCACOLA_2017_10K_p73",
+        "BESTBUY_2024Q2_10Q_p17",
+        "AMD_2022_10K_p47"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_04980",
+      "gold_evidence_pages": [
+        "PEPSICO_2021_10K_p62"
+      ],
+      "retrieved_page_ids": [
+        "3M_2022_10K_p51",
+        "AMERICANWATERWORKS_2021_10K_p87",
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "ADOBE_2022_10K_p56",
+        "ACTIVISIONBLIZZARD_2019_10K_p72"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_05718",
+      "gold_evidence_pages": [
+        "AMERICANWATERWORKS_2020_10K_p85"
+      ],
+      "retrieved_page_ids": [
+        "AMERICANWATERWORKS_2021_10K_p87",
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "3M_2022_10K_p51",
+        "WALMART_2020_10K_p55",
+        "3M_2018_10K_p59"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_10130",
+      "gold_evidence_pages": [
+        "CORNING_2020_10K_p69",
+        "CORNING_2020_10K_p71"
+      ],
+      "retrieved_page_ids": [
+        "CORNING_2022_10K_p23",
+        "NIKE_2023_10K_p61",
+        "3M_2018_10K_p59",
+        "3M_2022_10K_p51",
+        "NIKE_2019_10K_p53"
+      ],
+      "hit": false
+    },
+    {
+      "id": "financebench_id_10420",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p129",
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_page_ids": [
+        "AES_2022_10K_p131",
+        "3M_2022_10K_p47",
+        "AES_2022_10K_p129",
+        "NIKE_2021_10K_p60",
+        "NIKE_2019_10K_p53"
+      ],
+      "hit": true
+    },
+    {
+      "id": "financebench_id_10499",
+      "gold_evidence_pages": [
+        "KRAFTHEINZ_2019_10K_p49",
+        "KRAFTHEINZ_2019_10K_p51"
+      ],
+      "retrieved_page_ids": [
+        "PFIZER_2021_10K_p69",
+        "KRAFTHEINZ_2019_10K_p49",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2",
+        "Pfizer_2023Q2_10Q_p37",
+        "AMD_2022_10K_p47"
+      ],
+      "hit": true
+    }
+  ]
+}

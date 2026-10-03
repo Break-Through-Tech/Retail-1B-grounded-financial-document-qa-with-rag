@@ -24,6 +24,10 @@ Our September milestone is to define the project scope, review the FinanceBench 
 
 Task ownership and day-to-day progress are tracked in our team milestone document and GitHub Issues.
 
+## Keyword baseline
+
+Run `python3 keyword_baseline.py` after the prepared data files are present. It evaluates the frozen test split and writes a JSON report to `results/keyword_baseline.json`. The current frozen run is Hit@5 62.5% (20 of 32 questions).
+
 ## Data
 
 This repository includes a public FinanceBench sample:
