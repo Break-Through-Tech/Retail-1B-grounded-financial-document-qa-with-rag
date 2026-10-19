@@ -28,6 +28,17 @@ Task ownership and day-to-day progress are tracked in our team milestone documen
 
 Run `python3 keyword_baseline.py` after the prepared data files are present. It evaluates the frozen test split and writes a JSON report to `results/keyword_baseline.json`. The current frozen run is Hit@5 62.5% (20 of 32 questions).
 
+## Dense vector index
+
+`dense_index.py` splits each corpus page into overlapping ~150-word passages, embeds them with Sentence Transformers (`all-MiniLM-L6-v2` by default), and stores them in a FAISS cosine-similarity index. Every passage keeps its page and document metadata (`page_id`, `doc_name`, `company`, `doc_type`, `doc_period`, `gics_sector`, `page_num`, `doc_link`).
+
+```bash
+python3 dense_index.py build                      # writes indexes/dense/
+python3 dense_index.py search "What was 3M's FY2018 capital expenditure?"
+```
+
+In Python, `DenseIndex.load().search(query, k)` returns the top passages and `search_pages(query, k)` returns the top distinct pages. The index folder is git-ignored; rebuild it locally.
+
 ## Data
 
 This repository includes a public FinanceBench sample:
