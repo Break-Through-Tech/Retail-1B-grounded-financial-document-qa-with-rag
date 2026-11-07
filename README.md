@@ -16,11 +16,11 @@ Our September milestone is to define the project scope, review the FinanceBench 
 
 | Task | Target date |
 | --- | --- |
-| Define the project scope and what the first version will cover | September 15 |
-| Review the FinanceBench data | September 18 |
-| Prepare the FinanceBench data | September 22 |
-| Build a simple keyword-search baseline | September 26 |
-| Test the baseline and review the results | September 29 |
+| Define the project scope and what the first version will cover | September 15 
+| Review the FinanceBench data | September 18 
+| Prepare the FinanceBench data | September 22 
+| Build a simple keyword-search baseline | September 26 
+| Test the baseline and review the results | September 29 
 
 Task ownership and day-to-day progress are tracked in our team milestone document and GitHub Issues.
 
