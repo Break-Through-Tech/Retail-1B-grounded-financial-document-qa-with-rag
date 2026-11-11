@@ -11,18 +11,23 @@ from compare_configurations import (
     DEFAULT_SPLIT,
     RecordingRetriever,
     Retrievers,
+    answer_kind,
     evaluate_answers,
     evaluate_retrieval,
     first_gold_rank,
     grade_answer,
     hit_at_k,
     load_dev_questions,
+    latency_stats,
     load_manual_labels,
+    page_has_number,
     parse_citations,
+    percentile,
     reciprocal_rank_at_k,
     reciprocal_rank_fusion,
     score_answer,
     summarize_answers,
+    summarize_by_group,
 )
 from dense_index import DenseIndex, build
 
@@ -226,8 +231,8 @@ class AnswerLoopTests(unittest.TestCase):
             out = Path(tmp)
             configs = ["keyword", "hybrid_rerank"]
 
-            summary = evaluate_answers(generator, retrievers, QUESTIONS, configs, out, {})
-            self.assertEqual(generator.calls, 6)
+            summary, groups = evaluate_answers(generator, retrievers, QUESTIONS, configs, out, {})
+            self.assertEqual(generator.calls, 7)  # 6 answers + 1 untimed warm-up
             self.assertIs(generator.docRetriever, original)
             self.assertEqual(generator.min_evidence_score, -3.0)
             by_config = {row["config"]: row for row in summary}
@@ -238,6 +243,13 @@ class AnswerLoopTests(unittest.TestCase):
             graded = [json.loads(line) for line in (out / "answers_keyword_graded.jsonl").open()]
             self.assertEqual(len(graded), 3)
             self.assertTrue(all(row["retrieved_page_ids"] for row in graded))
+            self.assertTrue(all(row["latency_ms"] is not None and row["llm_called"] for row in graded))
+            self.assertEqual(by_config["keyword"]["llm_calls_per_question"], 1.0)
+            self.assertEqual(by_config["keyword"]["model_calls_per_question"], 1.0)
+            # Below the threshold, the reranked setup never reaches the LLM.
+            self.assertEqual(by_config["hybrid_rerank"]["llm_calls_per_question"], 0.0)
+            self.assertEqual(by_config["hybrid_rerank"]["model_calls_per_question"], 2.0)
+            self.assertEqual({row["group_by"] for row in groups}, {"question_type", "answer_kind"})
 
             # Label a needs-review answer, then re-run: nothing regenerates and the label sticks.
             review = (out / "answers_to_review.csv").read_text(encoding="utf-8").splitlines()
@@ -248,7 +260,7 @@ class AnswerLoopTests(unittest.TestCase):
             self.assertEqual(labels, {("keyword", "q3"): True})
 
             evaluate_answers(generator, retrievers, QUESTIONS, configs, out, labels)
-            self.assertEqual(generator.calls, 6)
+            self.assertEqual(generator.calls, 7)  # all resumed: no warm-up, no new answers
             self.assertEqual(load_manual_labels(out / "answers_to_review.csv"), labels)
 
     def test_recording_retriever_exposes_hybrid_score(self):
@@ -256,6 +268,88 @@ class AnswerLoopTests(unittest.TestCase):
         hits = adapter.search("total assets", top_res=2)
         self.assertEqual(adapter.last_results, hits)
         self.assertTrue(all("hybrid_score" in hit for hit in hits))
+
+
+class NewMetricTests(unittest.TestCase):
+    def test_percentile_and_latency_stats(self):
+        values = list(range(1, 101))  # 1..100
+        self.assertEqual(percentile(values, 95), 95)
+        self.assertEqual(percentile([7.0], 95), 7.0)
+        self.assertTrue(math.isnan(percentile([], 95)))
+        stats = latency_stats([10.0, None, 20.0, 30.0])
+        self.assertEqual(stats["median_latency_ms"], 20.0)
+        self.assertEqual(stats["p95_latency_ms"], 30.0)
+        self.assertAlmostEqual(stats["mean_latency_ms"], 20.0)
+
+    def test_answer_kind(self):
+        self.assertEqual(answer_kind("$1577.00"), "numeric")
+        self.assertEqual(answer_kind("1.9%"), "numeric")
+        self.assertEqual(answer_kind("Yes, it did."), "yes_no")
+        self.assertEqual(answer_kind("Packaging for food."), "free_text")
+
+    def test_page_has_number(self):
+        self.assertTrue(page_has_number("Purchases of PP&E (1,577) (1,373)", "$1577.00"))
+        self.assertTrue(page_has_number("Capex was $1.577 billion", "$1577.00"))
+        self.assertFalse(page_has_number("Capex was $1,373 million", "$1577.00"))
+
+    def test_citation_precision_completeness_and_invalid(self):
+        question = {"id": "m", "question": "?", "answer": "$100.00", "question_type": "metrics-generated",
+                    "gold_evidence_pages": ["ACME_2020_10K_p3", "ACME_2020_10K_p9"]}
+        texts = {row["page_id"]: row["text"] for row in PAGES}
+        answer = ("Assets were $100 [ACME_2020_10K, Page 3] [ACME_2020_10K, Page 3] "
+                  "[BOLT_2021_10K, Page 4] [ZZZ_2020_10K, Page 1].")
+        row = score_answer(answer, question, ["ACME_2020_10K_p3", "BOLT_2021_10K_p4"], page_texts=texts)
+        self.assertEqual(row["cited_page_ids"], ["ACME_2020_10K_p3", "BOLT_2021_10K_p4", "ZZZ_2020_10K_p1"])
+        self.assertAlmostEqual(row["citation_precision"], 1 / 3)
+        self.assertAlmostEqual(row["citation_completeness"], 1 / 2)
+        self.assertEqual(row["invalid_citations"], ["ZZZ_2020_10K_p1"])
+        self.assertTrue(row["cited_page_has_answer_number"])  # ACME p3 says "100 dollars"
+        self.assertEqual(row["answer_kind"], "numeric")
+
+        no_cite = score_answer("Assets were $100.", question, ["ACME_2020_10K_p3"], page_texts=texts)
+        self.assertIsNone(no_cite["citation_precision"])
+        self.assertIsNone(no_cite["cited_page_has_answer_number"])
+        free = score_answer("Prices [ACME_2020_10K, Page 9].", QUESTIONS[2], ["ACME_2020_10K_p9"], page_texts=texts)
+        self.assertIsNone(free["cited_page_has_answer_number"])  # only checked for numeric gold
+
+        summary = summarize_answers("dense", [row, no_cite])
+        self.assertAlmostEqual(summary["citation_precision"], 1 / 3)  # only answers with citations
+        self.assertAlmostEqual(summary["citation_completeness"], 1 / 4)  # (1/2 + 0) / 2
+        self.assertAlmostEqual(summary["uncited_answer_rate"], 1 / 2)
+        self.assertAlmostEqual(summary["invalid_citation_rate"], 1 / 2)
+        self.assertAlmostEqual(summary["citation_number_support"], 1.0)
+
+    def test_strict_accuracy_and_groups(self):
+        right = score_answer("Assets were $100 [ACME_2020_10K, Page 3].", QUESTIONS[0], ["ACME_2020_10K_p3"])
+        unknown = score_answer("Prices rose [ACME_2020_10K, Page 9].", QUESTIONS[2], ["ACME_2020_10K_p9"])
+        summary = summarize_answers("dense", [right, unknown])
+        self.assertEqual(summary["answer_accuracy"], 1.0)  # graded only
+        self.assertEqual(summary["answer_accuracy_strict"], 0.5)  # ungraded counts as wrong
+        groups = summarize_by_group("dense", [right, unknown])
+        by_type = {row["group"]: row for row in groups if row["group_by"] == "question_type"}
+        self.assertEqual(by_type["metrics-generated"]["answer_accuracy"], 1.0)
+        self.assertEqual(by_type["domain-relevant"]["needs_review"], 1)
+        by_kind = {row["group"]: row for row in groups if row["group_by"] == "answer_kind"}
+        self.assertEqual(set(by_kind), {"numeric", "free_text"})
+
+    def test_review_csv_only_lists_chosen_setups(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            order = ["ACME_2020_10K_p9", "ACME_2020_10K_p3", "BOLT_2021_10K_p7", "BOLT_2021_10K_p4"]
+            reranker = FakeReranker(order)
+            retrievers = make_retrievers(tmp, reranker)
+            generator = FakeGenerator(reranker)
+            evaluate_answers(generator, retrievers, QUESTIONS, ["keyword", "dense"], Path(tmp), {},
+                             review_configs=["dense"], warm_up=False)
+            self.assertEqual(generator.calls, 6)
+            lines = (Path(tmp) / "answers_to_review.csv").read_text(encoding="utf-8").splitlines()
+            self.assertGreater(len(lines), 1)
+            self.assertTrue(all(line.startswith("dense,") for line in lines[1:]))
+
+            # Label one dense answer, then switch the review to keyword: the dense label must survive.
+            labels = {("dense", "q3"): True}
+            evaluate_answers(generator, retrievers, QUESTIONS, ["keyword", "dense"], Path(tmp), labels,
+                             review_configs=["keyword"], warm_up=False)
+            self.assertEqual(load_manual_labels(Path(tmp) / "answers_to_review.csv"), labels)
 
 
 class DevSplitTests(unittest.TestCase):

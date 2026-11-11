@@ -1,10 +1,15 @@
 """Task #5: compare keyword, dense, hybrid, and reranked setups on the dev split.
 
-Metrics: Hit@5, MRR@10, answer accuracy, citation correctness, unsupported-answer rate.
+Retrieval: Hit@5, MRR@10, mean / median / p95 latency, model calls per question.
+Answers: accuracy (graded and strict, by question type and answer kind), citation
+correctness / precision / completeness, invalid and missing citations, whether the
+cited page contains the gold number, unsupported-answer rate, decline rate,
+mean / median / p95 end-to-end latency, model calls per question.
 Results and charts are saved to results/config_comparison/.
 
     python3 compare_configurations.py --skip-answers   # retrieval metrics only
     python3 compare_configurations.py                  # everything (needs a GPU)
+    python3 compare_configurations.py --review-configs dense hybrid   # hand-grade only these
 """
 
 from __future__ import annotations
@@ -16,6 +21,7 @@ import io
 import json
 import math
 import re
+import statistics
 import time
 from pathlib import Path
 from typing import Any, Callable
@@ -45,6 +51,10 @@ CANDIDATES_PER_RETRIEVER = 20  # same candidate pool size as HybridRetrieveReran
 RRF_K = 60  # standard reciprocal rank fusion constant
 ANSWER_TOP_K = 5  # passages given to the generator, same default as Task #3
 SEED = 42
+LATENCY_PERCENTILE = 95
+# Model calls made by each retrieval setup per question: the dense setups embed the
+# query once; the reranked setup also scores all candidates in one cross-encoder batch.
+RETRIEVAL_MODEL_CALLS = {"keyword": 0, "dense": 1, "hybrid": 1, "hybrid_rerank": 2}
 
 # Matches the insufficient-evidence reply from answer_generation.py.
 DECLINE_PATTERN = re.compile(r"can.?t answer this question from the available documents", re.I)
@@ -167,16 +177,44 @@ def reciprocal_rank_at_k(rank: int | None, k: int) -> float:
     return 1.0 / rank if rank is not None and rank <= k else 0.0
 
 
+def mean_or_nan(values: list[float]) -> float:
+    return sum(values) / len(values) if values else math.nan
+
+
+def percentile(values: list[float], pct: float) -> float:
+    """Nearest-rank percentile: the smallest value with at least pct% of values at or below it."""
+    ordered = sorted(values)
+    if not ordered:
+        return math.nan
+    return ordered[max(1, math.ceil(pct / 100 * len(ordered))) - 1]
+
+
+def latency_stats(values: list[float | None], prefix: str = "") -> dict[str, float]:
+    """Mean, median and p95 in milliseconds, ignoring missing values."""
+    present = [value for value in values if value is not None]
+    return {
+        f"{prefix}mean_latency_ms": mean_or_nan(present),
+        f"{prefix}median_latency_ms": statistics.median(present) if present else math.nan,
+        f"{prefix}p{LATENCY_PERCENTILE}_latency_ms": percentile(present, LATENCY_PERCENTILE),
+    }
+
+
 def evaluate_retrieval(
     retrievers: Retrievers,
     questions: list[dict[str, Any]],
     configs: list[str],
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    """Return (summary rows, per-question rows) for Hit@5, MRR@10 and latency."""
+    """Return (summary rows, per-question rows) for Hit@5, MRR@10 and latency.
+
+    One untimed warm-up query runs before each setup, so one-off costs (loading
+    weights onto the device, building caches) do not land in the p95.
+    """
     depth = max(HIT_K, MRR_K)
     summary, per_question = [], []
     for config in configs:
         hits, reciprocal_ranks, latencies = 0, [], []
+        if questions:
+            retrievers.retrieve(config, questions[0]["question"], depth)
         for question in questions:
             start = time.perf_counter()
             retrieved = retrievers.retrieve(config, question["question"], depth)
@@ -198,19 +236,20 @@ def evaluate_retrieval(
                 }
             )
         n = len(questions)
-        summary.append(
-            {
-                "config": config,
-                "questions": n,
-                f"hit_at_{HIT_K}": hits / n,
-                f"mrr_at_{MRR_K}": sum(reciprocal_ranks) / n,
-                "mean_latency_ms": sum(latencies) / n,
-            }
-        )
+        result = {
+            "config": config,
+            "questions": n,
+            f"hit_at_{HIT_K}": hits / n,
+            f"mrr_at_{MRR_K}": sum(reciprocal_ranks) / n,
+            **latency_stats(latencies),
+            "model_calls_per_question": RETRIEVAL_MODEL_CALLS[config],
+        }
+        summary.append(result)
         print(
             f"{CONFIG_LABELS[config]:<18} Hit@{HIT_K} {hits / n:6.1%}   "
             f"MRR@{MRR_K} {sum(reciprocal_ranks) / n:.3f}   "
-            f"{sum(latencies) / n:7.1f} ms/question"
+            f"median {result['median_latency_ms']:7.1f} ms   "
+            f"p{LATENCY_PERCENTILE} {result[f'p{LATENCY_PERCENTILE}_latency_ms']:7.1f} ms"
         )
     return summary, per_question
 
@@ -275,6 +314,36 @@ def numbers_match(predicted: float, gold: float, gold_decimals: int) -> bool:
     return abs(predicted - gold) <= max(0.01 * abs(gold), rounding) + 1e-9
 
 
+def answer_kind(gold_answer: str) -> str:
+    """How a gold answer is graded: 'numeric', 'yes_no' (both automatic) or 'free_text' (a person)."""
+    gold = gold_answer.strip()
+    if NUMERIC_ANSWER_PATTERN.match(gold):
+        return "numeric"
+    if re.match(r"\W*(yes|no)\b", gold, re.I):
+        return "yes_no"
+    return "free_text"
+
+
+def page_has_number(page_text: str, gold_answer: str) -> bool:
+    """True if the page states the gold number (same tolerance and unit scales as grading).
+
+    Only a rough support check: it works for extracted figures such as capex, but a
+    calculated answer (a ratio or a growth rate) is usually not printed on any page.
+    """
+    gold_value = parse_number(gold_answer)
+    if gold_value is None:
+        return False
+    places = decimals(gold_answer)
+    for token in NUMBER_PATTERN.findall(page_text):
+        value = parse_number(token)
+        if value is None:
+            continue
+        for scale in (1, 1000, 0.001):
+            if numbers_match(value * scale, gold_value, places) or numbers_match(-value * scale, gold_value, places):
+                return True
+    return False
+
+
 def grade_answer(answer: str, gold_answer: str) -> bool | None:
     """True/False when the answer can be graded automatically, else None (needs a person).
 
@@ -310,45 +379,113 @@ def score_answer(
     question: dict[str, Any],
     retrieved_page_ids: list[str],
     manual_label: bool | None = None,
+    page_texts: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    """Grade one generated answer. Returns the per-question fields saved to answers_<setup>.jsonl."""
+    """Grade one generated answer. Returns the per-question fields saved to answers_<setup>_graded.jsonl.
+
+    Citation fields (None when they do not apply):
+      cites_gold_page        cites at least one gold evidence page
+      citation_precision     share of the distinct cited pages that are gold pages
+      citation_completeness  share of the gold pages that are cited
+      invalid_citations      cited pages the model was never shown (made-up citations)
+      cited_page_has_answer_number  for numeric gold answers: a cited page states that number
+    """
     declined = is_decline(answer)
-    cited = parse_citations(answer)
+    cited = list(dict.fromkeys(parse_citations(answer)))  # distinct, in order
     gold = set(question["gold_evidence_pages"])
     retrieved = set(retrieved_page_ids)
+    kind = answer_kind(question["answer"])
     correct = manual_label if manual_label is not None else grade_answer(answer, question["answer"])
-    cites_gold = bool(gold.intersection(cited))
+    gold_cited = gold.intersection(cited)
     cites_retrieved = bool(retrieved.intersection(cited))
     unsupported = (not declined) and (not cites_retrieved or correct is False)
+    has_number = None
+    if kind == "numeric" and cited and not declined and page_texts is not None:
+        has_number = any(page_has_number(page_texts.get(page_id, ""), question["answer"]) for page_id in cited)
     return {
+        "question_type": question.get("question_type"),
+        "answer_kind": kind,
         "declined": declined,
         "correct": correct,
         "graded_by": "person" if manual_label is not None else ("auto" if correct is not None else "needs_review"),
         "cited_page_ids": cited,
-        "cites_gold_page": cites_gold,
+        "cites_gold_page": bool(gold_cited),
         "cites_retrieved_page": cites_retrieved,
+        "citation_precision": len(gold_cited) / len(cited) if cited else None,
+        "citation_completeness": len(gold_cited) / len(gold) if gold else None,
+        "invalid_citations": [page_id for page_id in cited if page_id not in retrieved],
+        "cited_page_has_answer_number": has_number,
         "unsupported": unsupported,
     }
 
 
+def rate(rows: list[dict[str, Any]], test: Callable[[dict[str, Any]], bool]) -> float:
+    return sum(bool(test(row)) for row in rows) / len(rows) if rows else math.nan
+
+
 def summarize_answers(config: str, rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """One summary row per setup. Citation metrics are over answered (not declined) questions.
+
+    answer_accuracy is over graded questions only, so it is too high while free-text
+    answers still need review; answer_accuracy_strict counts every ungraded answer as
+    wrong (a lower bound). Once nothing needs review the two are equal.
+    """
     n = len(rows)
     answered = [row for row in rows if not row["declined"]]
     graded = [row for row in rows if row["correct"] is not None]
     correct = sum(bool(row["correct"]) for row in graded)
+    with_citations = [row for row in answered if row.get("cited_page_ids")]
+    number_checked = [row for row in answered if row.get("cited_page_has_answer_number") is not None]
+    llm_calls = [row["llm_called"] for row in rows if row.get("llm_called") is not None]
+    llm_rate = mean_or_nan([float(value) for value in llm_calls])
     return {
         "config": config,
         "questions": n,
         "graded_questions": len(graded),
         "needs_review": n - len(graded),
-        # Accuracy over the questions that have a grade; see needs_review for the rest.
         "answer_accuracy": correct / len(graded) if graded else math.nan,
-        "citation_correctness": (
-            sum(row["cites_gold_page"] for row in answered) / len(answered) if answered else math.nan
+        "answer_accuracy_strict": correct / n if n else math.nan,
+        "citation_correctness": rate(answered, lambda row: row["cites_gold_page"]),
+        "citation_precision": mean_or_nan([row["citation_precision"] for row in with_citations]),
+        "citation_completeness": mean_or_nan(
+            [row["citation_completeness"] for row in answered if row.get("citation_completeness") is not None]
         ),
-        "unsupported_answer_rate": sum(row["unsupported"] for row in rows) / n if n else math.nan,
+        "uncited_answer_rate": rate(answered, lambda row: not row.get("cited_page_ids")),
+        "invalid_citation_rate": rate(answered, lambda row: row.get("invalid_citations")),
+        "citation_number_support": rate(number_checked, lambda row: row["cited_page_has_answer_number"]),
+        "unsupported_answer_rate": rate(rows, lambda row: row["unsupported"]),
         "decline_rate": (n - len(answered)) / n if n else math.nan,
+        **latency_stats([row.get("latency_ms") for row in rows]),
+        "llm_calls_per_question": llm_rate,
+        "model_calls_per_question": (
+            RETRIEVAL_MODEL_CALLS.get(config, 0) + llm_rate if not math.isnan(llm_rate) else math.nan
+        ),
     }
+
+
+def summarize_by_group(config: str, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Accuracy and citation metrics per question_type and per answer_kind, for one setup."""
+    out = []
+    for field in ("question_type", "answer_kind"):
+        for group in sorted({str(row.get(field)) for row in rows}):
+            subset = [row for row in rows if str(row.get(field)) == group]
+            full = summarize_answers(config, subset)
+            out.append(
+                {
+                    "config": config,
+                    "group_by": field,
+                    "group": group,
+                    **{
+                        key: full[key]
+                        for key in (
+                            "questions", "graded_questions", "needs_review", "answer_accuracy",
+                            "answer_accuracy_strict", "citation_correctness", "citation_precision",
+                            "unsupported_answer_rate", "decline_rate",
+                        )
+                    },
+                }
+            )
+    return out
 
 
 def load_manual_labels(path: Path | None) -> dict[tuple[str, str], bool]:
@@ -398,16 +535,28 @@ def evaluate_answers(
     output_dir: Path,
     manual_labels: dict[tuple[str, str], bool],
     seed_fn: Callable[[int], None] | None = None,
-) -> list[dict[str, Any]]:
+    review_configs: list[str] | None = None,
+    warm_up: bool = True,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Generate and grade an answer per question per setup. Resumes from answers_<setup>.jsonl.
+
+    Returns (summary rows, per-group rows). Each new answer is timed end to end
+    (retrieval + generation) and saved with its latency, so a resumed run keeps
+    the timings of earlier answers. Before the first timed answer of a run, one
+    untimed warm-up answer is generated so model start-up is not in the p95.
 
     The Task #4 evidence threshold is a cross-encoder score, so it only means
     something for ``hybrid_rerank``. For the other setups it is switched off, so
     those setups always answer; compare their decline rate with that in mind.
+
+    Only setups in ``review_configs`` (default: all) go to answers_to_review.csv.
     """
     original_retriever = generator.docRetriever
     original_threshold = generator.min_evidence_score
-    summary = []
+    review_configs = list(configs) if review_configs is None else list(review_configs)
+    page_texts = {page_id: row["text"] for page_id, row in retrievers.by_page_id.items()}
+    summary, groups, review_rows = [], [], []
+    warmed_up = not warm_up
     try:
         for config in configs:
             path = output_dir / f"answers_{config}.jsonl"
@@ -420,20 +569,28 @@ def evaluate_answers(
                 for number, question in enumerate(questions, start=1):
                     if question["id"] in done:
                         saved = done[question["id"]]
-                        answer, retrieved_ids = saved["answer"], saved["retrieved_page_ids"]
                     else:
+                        if not warmed_up:
+                            with contextlib.redirect_stdout(io.StringIO()):
+                                generator.generate(question["question"], top_k=ANSWER_TOP_K)
+                            warmed_up = True
                         if seed_fn is not None:
                             seed_fn(SEED)
+                        start = time.perf_counter()
                         with contextlib.redirect_stdout(io.StringIO()):
                             answer = generator.generate(question["question"], top_k=ANSWER_TOP_K)
-                        retrieved_ids = [hit["page_id"] for hit in adapter.last_results]
-                        handle.write(
-                            json.dumps(
-                                {"id": question["id"], "answer": answer, "retrieved_page_ids": retrieved_ids},
-                                ensure_ascii=False,
-                            )
-                            + "\n"
-                        )
+                        latency_ms = (time.perf_counter() - start) * 1000
+                        results = adapter.last_results
+                        # generate() only calls the LLM if the top score clears the threshold.
+                        llm_called = bool(results) and results[0]["hybrid_score"] >= generator.min_evidence_score
+                        saved = {
+                            "id": question["id"],
+                            "answer": answer,
+                            "retrieved_page_ids": [hit["page_id"] for hit in results],
+                            "latency_ms": round(latency_ms, 2),
+                            "llm_called": llm_called,
+                        }
+                        handle.write(json.dumps(saved, ensure_ascii=False) + "\n")
                         handle.flush()
                         print(f"  {CONFIG_LABELS[config]}: {number}/{len(questions)}", end="\r")
                     label = manual_labels.get((config, question["id"]))
@@ -444,24 +601,31 @@ def evaluate_answers(
                             "question": question["question"],
                             "gold_answer": question["answer"],
                             "gold_evidence_pages": question["gold_evidence_pages"],
-                            "answer": answer,
-                            "retrieved_page_ids": retrieved_ids,
-                            **score_answer(answer, question, retrieved_ids, label),
+                            "answer": saved["answer"],
+                            "retrieved_page_ids": saved["retrieved_page_ids"],
+                            "latency_ms": saved.get("latency_ms"),
+                            "llm_called": saved.get("llm_called"),
+                            **score_answer(saved["answer"], question, saved["retrieved_page_ids"], label, page_texts),
                         }
                     )
             write_jsonl(output_dir / f"answers_{config}_graded.jsonl", rows)
             result = summarize_answers(config, rows)
             summary.append(result)
+            groups.extend(summarize_by_group(config, rows))
             print(
                 f"{CONFIG_LABELS[config]:<18} accuracy {result['answer_accuracy']:6.1%} "
-                f"({result['graded_questions']} graded)   citations {result['citation_correctness']:6.1%}   "
-                f"unsupported {result['unsupported_answer_rate']:6.1%}   declined {result['decline_rate']:6.1%}"
+                f"({result['graded_questions']} graded; strict {result['answer_accuracy_strict']:6.1%})   "
+                f"citations {result['citation_correctness']:6.1%} (precision {result['citation_precision']:6.1%})   "
+                f"unsupported {result['unsupported_answer_rate']:6.1%}   declined {result['decline_rate']:6.1%}   "
+                f"p{LATENCY_PERCENTILE} {result[f'p{LATENCY_PERCENTILE}_latency_ms']:8.0f} ms"
             )
-            write_review_csv(output_dir / "answers_to_review.csv", rows, append=config != configs[0])
+            # Rows a person already graded always stay, so changing review_configs loses no labels.
+            review_rows.extend(row for row in rows if config in review_configs or row["graded_by"] == "person")
+            write_review_csv(output_dir / "answers_to_review.csv", review_rows)
     finally:
         generator.docRetriever = original_retriever
         generator.min_evidence_score = original_threshold
-    return summary
+    return summary, groups
 
 
 # ---------------------------------------------------------------------------
@@ -492,17 +656,16 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         writer.writerows(rows)
 
 
-def write_review_csv(path: Path, rows: list[dict[str, Any]], append: bool) -> None:
+def write_review_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     """Answers a person grades: blank ``correct`` if not yet labeled, else the saved 1/0.
 
     Already-labeled rows stay in the file, so re-running with
     ``--manual-labels <this file>`` never loses earlier labels.
     """
-    fields = ["config", "id", "question", "gold_answer", "answer", "correct"]
-    with path.open("a" if append else "w", encoding="utf-8", newline="") as handle:
+    fields = ["config", "id", "question_type", "question", "gold_answer", "answer", "correct"]
+    with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
-        if not append:
-            writer.writeheader()
+        writer.writeheader()
         for row in rows:
             if row["graded_by"] in {"needs_review", "person"}:
                 label = "" if row["correct"] is None else str(int(row["correct"]))
@@ -586,7 +749,12 @@ def main() -> None:
     parser.add_argument("--configs", nargs="+", choices=CONFIGS, default=list(CONFIGS))
     parser.add_argument("--skip-answers", action="store_true", help="Only compute retrieval metrics (no LLM)")
     parser.add_argument("--limit", type=int, help="Use only the first N dev questions (quick trial runs)")
-    parser.add_argument("--manual-labels", type=Path, help="answers_to_review.csv with the correct column filled in")
+    parser.add_argument("--manual-labels", type=Path, help="answers_to_review.csv with the correct column filled in "
+                        "(default: the one already in --output-dir, if any)")
+    parser.add_argument(
+        "--review-configs", nargs="+", choices=CONFIGS,
+        help="Only put these setups' free-text answers in answers_to_review.csv (default: all)",
+    )
     args = parser.parse_args()
 
     questions = load_dev_questions(args.questions, args.split)
@@ -610,21 +778,30 @@ def main() -> None:
         args.output_dir / "retrieval_metrics.png",
     )
 
+    review_path = args.output_dir / "answers_to_review.csv"
+    if args.manual_labels is None and review_path.exists():
+        args.manual_labels = review_path  # keep labels already typed into the review file
+        print(f"Using existing labels from {review_path}")
+
     answer_summary: list[dict[str, Any]] = []
+    answer_groups: list[dict[str, Any]] = []
     if generator is not None:
         from transformers import set_seed
 
         print("\nAnswer metrics (Qwen generator from answer_generation.py)")
-        answer_summary = evaluate_answers(
+        answer_summary, answer_groups = evaluate_answers(
             generator, retrievers, questions, configs, args.output_dir,
-            load_manual_labels(args.manual_labels), seed_fn=set_seed,
+            load_manual_labels(args.manual_labels), seed_fn=set_seed, review_configs=args.review_configs,
         )
         write_csv(args.output_dir / "answer_metrics.csv", answer_summary)
+        write_csv(args.output_dir / "answer_metrics_by_group.csv", answer_groups)
         plot_metrics(
             answer_summary,
             {
-                "answer_accuracy": "Answer accuracy",
-                "citation_correctness": "Citation correctness",
+                "answer_accuracy": "Answer accuracy\n(graded)",
+                "answer_accuracy_strict": "Answer accuracy\n(strict)",
+                "citation_correctness": "Cites a\ngold page",
+                "citation_precision": "Citation\nprecision",
                 "unsupported_answer_rate": "Unsupported answers\n(lower is better)",
             },
             f"Answers on the dev split ({len(questions)} questions)",
@@ -641,9 +818,11 @@ def main() -> None:
             "rrf_k": RRF_K,
             "answer_top_k": ANSWER_TOP_K,
             "seed": SEED,
+            "latency_percentile": LATENCY_PERCENTILE,
         },
         "retrieval": retrieval_summary,
         "answers": answer_summary,
+        "answers_by_group": answer_groups,
     }
     (args.output_dir / "summary.json").write_text(json.dumps(without_nan(summary), indent=2) + "\n", encoding="utf-8")
     print(f"\nSaved results to {args.output_dir}")
