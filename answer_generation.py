@@ -111,10 +111,16 @@ class QwenGeneratorRetail:
                     "You are a precise financial assistant. "
                     "Answer the question using ONLY the provided "
                     "document passages below. "
+                    "Start with a one-sentence direct answer; for a "
+                    "yes/no question, the first word must be Yes or No. "
                     "If calculations are required, show your "
-                    "step-by-step math clearly. "
+                    "step-by-step math clearly after that sentence. "
                     "Every fact or number must include a citation "
-                    "in the format [DocName, Page X]. "
+                    "in the format [DocName, Page X], copied from the "
+                    "Source line of the passage it came from, placed "
+                    "right after the number, for example: "
+                    "\"Capital expenditure was $1,577 million "
+                    "[3M_2018_10K, Page 59].\" "
                     "If the passages do not contain enough "
                     "information to answer, respond exactly: "
                     "\"I can't answer this question from the "
@@ -126,7 +132,10 @@ class QwenGeneratorRetail:
                 "role": "user",
                 "content": (
                     f"RETRIEVED PASSAGES:\n{context_str}\n\n"
-                    f"QUESTION: {query}"
+                    f"QUESTION: {query}\n\n"
+                    "Remember: begin with the direct answer (Yes or No "
+                    "first for a yes/no question), and cite every "
+                    "number as [DocName, Page X]."
                 ),
             },
         ]
