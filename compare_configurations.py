@@ -61,6 +61,7 @@ DECLINE_PATTERN = re.compile(r"can.?t answer this question from the available do
 CITATION_PATTERN = re.compile(r"\[\s*([^\[\],]+?)\s*,\s*Page\s+(\d+)\s*\]", re.I)
 NUMBER_PATTERN = re.compile(r"-?\(?\$?\s?\d[\d,]*(?:\.\d+)?\)?\s?%?")
 NUMERIC_ANSWER_PATTERN = re.compile(r"^\s*-?\$?\s?-?[\d,]*\.?\d+\s?%?\s*$")
+FINAL_ANSWER_PATTERN = re.compile(r"final answer\W*?[:\-]\s*(.+)", re.I)
 YEAR_PATTERN = re.compile(r"(?<![$\d.,])\b(?:FY\s?)?(?:19|20)\d{2}\b(?![.,]\d|\s?%)", re.I)
 
 
@@ -344,17 +345,29 @@ def page_has_number(page_text: str, gold_answer: str) -> bool:
     return False
 
 
+def final_answer_line(answer: str) -> str | None:
+    """Text after the last 'Final answer:' the prompt asks for, or None if there is none.
+
+    Markdown such as **Final answer:** is allowed. Grading this line instead of the
+    whole answer stops a stray number or Yes/No in the reasoning from being graded.
+    """
+    matches = FINAL_ANSWER_PATTERN.findall(answer.replace("*", ""))
+    return matches[-1].strip() if matches else None
+
+
 def grade_answer(answer: str, gold_answer: str) -> bool | None:
     """True/False when the answer can be graded automatically, else None (needs a person).
 
     Numeric gold answers ('$1577.00', '24.26', '1.9%') are matched against numbers in
     the answer, allowing for units written differently (millions vs billions, 0.019
     vs 1.9%) and for sign written as a minus or parentheses. Gold answers that start
-    with Yes or No are matched against the first word of the answer. A declined
-    answer is always wrong, because every FinanceBench question is answerable.
+    with Yes or No are matched against the first word of the answer. If the answer
+    has a 'Final answer:' line, only that line is graded. A declined answer is
+    always wrong, because every FinanceBench question is answerable.
     """
     if is_decline(answer):
         return False
+    answer = final_answer_line(answer) or answer
     gold = gold_answer.strip()
     if NUMERIC_ANSWER_PATTERN.match(gold):
         gold_value = parse_number(gold)

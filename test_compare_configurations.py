@@ -191,6 +191,18 @@ class AnswerGradingTests(unittest.TestCase):
         self.assertIsNone(grade_answer("Packaging for food and healthcare.", "Amcor is a packaging leader."))
         self.assertFalse(grade_answer("I can't answer this question from the available documents.", "$5.00"))
 
+    def test_final_answer_line_is_graded(self):
+        # The reasoning says "No" and $969 first; only the Final answer line counts.
+        answer = ("No, at first glance it looks positive at $969 [AWK_2022_10K, Page 80].\n"
+                  "Working capital = 1,250 - 2,811 = -1,561.\n"
+                  "**Final answer:** Yes, it is negative at -$1,561 million [AWK_2022_10K, Page 81]")
+        self.assertTrue(grade_answer(answer, "Yes, negative working capital."))
+        self.assertTrue(grade_answer(answer, "-1561"))
+        self.assertFalse(grade_answer(answer, "No"))
+        self.assertFalse(grade_answer(answer, "969"))
+        # No Final answer line: the old rules apply.
+        self.assertTrue(grade_answer("No. It was negative.", "No, it was negative."))
+
     def test_parse_citations(self):
         answer = "A [3M_2018_10K, Page 59] and B [AMCOR_2023_10K, page 7]; not [Note 3]."
         self.assertEqual(parse_citations(answer), ["3M_2018_10K_p59", "AMCOR_2023_10K_p7"])
