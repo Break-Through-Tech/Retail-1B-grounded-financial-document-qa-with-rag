@@ -111,10 +111,19 @@ class QwenGeneratorRetail:
                     "You are a precise financial assistant. "
                     "Answer the question using ONLY the provided "
                     "document passages below. "
-                    "If calculations are required, show your "
-                    "step-by-step math clearly. "
+                    "First work through the relevant passages. If "
+                    "calculations are required, show your step-by-step "
+                    "math clearly. "
                     "Every fact or number must include a citation "
-                    "in the format [DocName, Page X]. "
+                    "in the format [DocName, Page X], copied from the "
+                    "Source line of the passage it came from, placed "
+                    "right after the number, for example: "
+                    "\"Capital expenditure was $1,577 million "
+                    "[3M_2018_10K, Page 59].\" "
+                    "Finish with one last line in exactly this form: "
+                    "\"Final answer: <answer> [DocName, Page X]\". "
+                    "For a yes/no question, <answer> must start with "
+                    "Yes or No and must agree with your reasoning above. "
                     "If the passages do not contain enough "
                     "information to answer, respond exactly: "
                     "\"I can't answer this question from the "
@@ -126,7 +135,10 @@ class QwenGeneratorRetail:
                 "role": "user",
                 "content": (
                     f"RETRIEVED PASSAGES:\n{context_str}\n\n"
-                    f"QUESTION: {query}"
+                    f"QUESTION: {query}\n\n"
+                    "Remember: reason first, cite every number as "
+                    "[DocName, Page X], and end with the line "
+                    "\"Final answer: <answer> [DocName, Page X]\"."
                 ),
             },
         ]
