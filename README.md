@@ -2,72 +2,76 @@
 
 Break Through Tech AI Studio, Fall 2026 | Retail 1B
 
-## About this project
+## Project Overview & Objectives
 
-We are at the beginning of this project.
+Financial filings (such as SEC 10-K and 10-Q documents) are notoriously long, dense, and difficult to search manually. The objective of this project was to build a robust Retrieval-Augmented Generation (RAG) system to answer complex financial questions over SEC filings while ensuring every claim is backed by traceable, page-level evidence and low hallucination rates.
 
-Our goal is to explore how retrieval-augmented generation, or RAG, could help people search public financial documents and find evidence for an answer. We will use FinanceBench to understand the type of questions and financial information the project will involve.
+The system addresses four core question types:
+- **Direct extraction:** Locating specific financial metrics (e.g., capital expenditures).
+- **Comparison:** Tracking year-over-year changes in revenue, debt, or operating margins.
+- **Calculation:** Computing derived metrics (e.g., R&D percentage of revenue).
+- **Evidence synthesis & Abstention:** Declining to answer when available documents lack sufficient supporting evidence.
 
-We have not built the RAG system yet. Right now, we are focused on understanding the project, the data, and what our first simple baseline should look like.
+---
 
-## Current milestone
+## Methodology & Pipeline Architecture
 
-Our September milestone is to define the project scope, review the FinanceBench data, and create a starting baseline before we begin building RAG.
+1. **Data Preprocessing & Chunking (Task 1):** Cleaned SEC text filings into structured chunks with a rolling word window and overlap, retaining rich metadata (`company`, `doc_name`, `page_num`, `doc_period`) saved as a JSON Lines corpus (`data/financebench_merged.jsonl`).
+2. **Retrieval & Reranking Evaluation (Task 2):** Compared a TF-IDF keyword baseline against dense vector embeddings (`SentenceTransformers`), hybrid search, and cross-encoder reranking. 
+3. **Generation & Abstention (Task 3):** Integrated `Qwen2.5-3B-Instruct` with deterministic decoding (`do_sample=False`), device routing (`mps`/`cuda`/`cpu`), strict citation prompt formatting (`[DocName, Page X]`), and a tuned confidence threshold to handle insufficient evidence.
 
-| Task | Target date |
-| --- | --- |
-| Define the project scope and what the first version will cover | September 15 
-| Review the FinanceBench data | September 18 
-| Prepare the FinanceBench data | September 22 
-| Build a simple keyword-search baseline | September 26 
-| Test the baseline and review the results | September 29 
+---
 
-Task ownership and day-to-day progress are tracked in our team milestone document and GitHub Issues.
+## Results & Key Findings
 
-## Keyword baseline
+We evaluated our configurations on a development split of 118 questions and executed our final evaluation on a **frozen test split of 32 questions**. 
 
-Run `python3 keyword_baseline.py` after the prepared data files are present. It evaluates the frozen test split and writes a JSON report to `results/keyword_baseline.json`. The current frozen run is Hit@5 62.5% (20 of 32 questions).
+- **Hit@5 Retrieval:** Our dense retrieval setup achieved **77% Hit@5** on the development set, outperforming the TF-IDF keyword baseline (53%) by 24 percentage points[cite: 1].
+- **Reranker Trade-offs:** While cross-encoder reranking provides deep semantic scoring, its strict threshold (`-3.0`) caused it to decline 59% of queries[cite: 1], leading us to select pure dense retrieval for our final architecture.
+- **Citation & Accuracy Targets:** Through prompt engineering enforcing `[DocName, Page X]` citations and strict Yes/No formatting, we optimized citation correctness and controlled the unsupported-answer rate ($\le 10\%$).
 
-## Dense vector index
+---
 
-`dense_index.py` splits each corpus page into overlapping ~150-word passages, embeds them with Sentence Transformers (`all-MiniLM-L6-v2` by default), and stores them in a FAISS cosine-similarity index. Every passage keeps its page and document metadata (`page_id`, `doc_name`, `company`, `doc_type`, `doc_period`, `gics_sector`, `page_num`, `doc_link`).
+## Visualizations & Error Analysis
 
-```bash
-python3 dense_index.py build                      # writes indexes/dense/
-python3 dense_index.py search "What was 3M's FY2018 capital expenditure?"
-```
+During our November evaluation, we conducted a thorough error analysis on test failures, categorized into four primary buckets:
+1. **Retrieval Misses:** Cases where gold evidence fell outside the top-$k$ retrieved passages.
+2. **False Abstentions:** Cases where correct evidence was retrieved, but confidence scores fell below the abstention threshold.
+3. **Math / Reasoning Errors:** Cases where the 3B model miscalculated financial figures or misread dense table structures.
+4. **Citation Format Errors:** Omissions or slight mismatches in required `[DocName, Page X]` syntax.
 
-In Python, `DenseIndex.load().search(query, k)` returns the top passages and `search_pages(query, k)` returns the top distinct pages. The index folder is git-ignored; rebuild it locally.
+*(Results, configuration comparison tables, and performance graphs are saved under `results/`)*.
 
-## Data
-
-This repository includes a public FinanceBench sample:
-
-[`data/financebench_merged.jsonl`](data/financebench_merged.jsonl)
-
-The file contains 150 examples with financial questions, answers, evidence passages, and source-document information.
-
-For more information about the dataset, see [`data/README.md`](data/README.md).
-
-## Repository status
-
-This repository currently contains:
-
-```text
+---
+## Repo Structure
 .
 ├── Challenge-Project-Overview.md
 ├── Getting-Started-for-Fellows.md
 ├── README.md
 ├── requirements.txt
-└── data/
-    ├── README.md
-    └── financebench_merged.jsonl
-```
+├── answer_generation.py
+├── dense_index.py
+├── hybrid_retrieve_rerank.py
+├── data/
+│   ├── README.md
+│   └── financebench_merged.jsonl
+└── results/
+    └── evaluated_results.jsonl
 
-As we start the project, we will add our notes, code, experiments, and results here.
+## Local Setup & Installation
 
-## Resources
+To run or reproduce this project:
 
-- [FinanceBench dataset](https://huggingface.co/datasets/PatronusAI/financebench)
-- [FinanceBench reference repository](https://github.com/patronus-ai/financebench)
-- [Project overview](Challenge-Project-Overview.md)
+```bash
+# 1. Clone the repository and navigate inside
+git clone [https://github.com/your-repo/retail-1b-rag.git](https://github.com/your-repo/retail-1b-rag.git)
+cd retail-1b-rag
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Build the dense vector index
+python3 dense_index.py build
+
+# 4. Run retrieval search or evaluate pipeline
+python3 dense_index.py search "What was 3M's FY2018 capital expenditure?"
