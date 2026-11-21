@@ -1,0 +1,795 @@
+{
+  "total_questions": 32,
+  "hit_at_5_pct": 75.0,
+  "abstention_rate_pct": 34.38,
+  "mean_latency_sec": 17.334,
+  "model_calls_per_question": 2,
+  "results": [
+    {
+      "id": "financebench_id_00206",
+      "question_type": "domain-relevant",
+      "question": "Are JPM's gross margins historically consistent (not fluctuating more than roughly 2% each year)? If gross margins are not a relevant metric for a company like this, then please state that and explain why.",
+      "gold_answer": "Since JPM is a financial institution, gross margin is not a relevant metric.",
+      "gold_evidence_pages": [
+        "JPMORGAN_2022_10K_p2"
+      ],
+      "retrieved_pages_top5": [
+        "BESTBUY_2024Q2_10Q_p17",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p1",
+        "JPMORGAN_2021Q1_10Q_p18",
+        "JPMORGAN_2021Q1_10Q_p5",
+        "MGMRESORTS_2022Q4_EARNINGS_p3"
+      ],
+      "top_score": 0.4262,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "To determine if JPMorgan Chase's gross margins are historically consistent, we need to look at the historical gross margins over multiple years. However, the provided documents do not contain specific gross margin data for multiple years. Instead, they provide some financial metrics but do not explicitly mention gross margins.\n\nGiven the lack of direct information about gross margins, I cannot definitively state whether JPMorgan Chase's gross margins are historically consistent based solely on the provided documents. Therefore, the answer is:\n\nI can't answer this question from the available documents.",
+      "latency_sec": 11.159
+    },
+    {
+      "id": "financebench_id_00215",
+      "question_type": "domain-relevant",
+      "question": "Is Verizon a capital intensive business based on FY 2022 data?",
+      "gold_answer": "Yes. Verizon's capital intensity ratio was approximately 2.774729. This means that it took approximately $2.77 of assets to generate $1 of revenue and thus, Verizon can be considered capital intensive.",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p55"
+      ],
+      "retrieved_pages_top5": [
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p76"
+      ],
+      "top_score": 0.5968,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "Yes [VERIZON_2022_10K, Page 55]",
+      "cited_pages": [
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p76",
+        "VERIZON_2022_10K_p55"
+      ],
+      "full_response": "To determine if Verizon is a capital intensive business based on FY 2022 data, I will analyze the capital expenditures and investments, as well as the total assets and liabilities.\n\nFrom the Consolidated Balance Sheets (Source: [VERIZON_2022_10K, Page 55]), we see that the total assets of Verizon Communications Inc. and Subsidiaries were $379,680 million at December 31, 2022. This indicates a substantial amount of capital invested in the business.\n\nThe Capital Expenditures and Investments section (Source: [VERIZON_2022_10K, Page 22]) states that during the year ended December 31, 2022, Verizon made $23.1 billion in investments in its wireless networks, high-speed fiber, and other advanced technologies. This further supports the notion that Verizon is investing heavily in capital-intensive areas.\n\nAdditionally, the Notes to the Consolidated Financial Statements (Source: [VERIZON_2022_10K, Page 76]) mention that in 2021, Verizon received $41.4 billion in proceeds from long-term borrowings, which were used to finance the purchase of wireless licenses and fund certain renewable energy projects. This suggests ongoing capital investment activities.\n\nGiven the substantial capital investments in both 2022 and 2021, and the overall large scale of assets, it is reasonable to conclude that Verizon is indeed a capital-intensive business.\n\nFinal answer: Yes [VERIZON_2022_10K, Page 55]",
+      "latency_sec": 27.019
+    },
+    {
+      "id": "financebench_id_00216",
+      "question_type": "domain-relevant",
+      "question": "Does Verizon have a reasonably healthy liquidity profile based on its quick ratio for FY 2022? If the quick ratio is not relevant to measure liquidity, please state that and explain why.",
+      "gold_answer": "No. The quick ratio was approximately 0.54 for Verizon. It indicated that Verizon does not have a healthy liquidity profile.",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p55"
+      ],
+      "retrieved_pages_top5": [
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p76"
+      ],
+      "top_score": 0.4335,
+      "hit_at_5": true,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [
+        "VERIZON_2022_10K_p55"
+      ],
+      "full_response": "I can't answer this question from the available documents. [VERIZON_2022_10K, Page 55]",
+      "latency_sec": 5.42
+    },
+    {
+      "id": "financebench_id_00394",
+      "question_type": "novel-generated",
+      "question": "In 2022 Q2, which of JPM's business segments had the highest net income?",
+      "gold_answer": "Corporate & Investment Bank. Its net income was $3725 million.",
+      "gold_evidence_pages": [
+        "JPMORGAN_2022Q2_10Q_p20"
+      ],
+      "retrieved_pages_top5": [
+        "3M_2022_10K_p24",
+        "BESTBUY_2024Q2_10Q_p17",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p0",
+        "JPMORGAN_2021Q1_10Q_p18",
+        "JPMORGAN_2022Q2_10Q_p20"
+      ],
+      "top_score": 0.551,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "Corporate & Investment Bank [JPMORGAN_2022Q2_10Q, Page 20]",
+      "cited_pages": [
+        "JPMORGAN_2022Q2_10Q_p20",
+        "JPMORGAN_2022Q2_10Q_p20"
+      ],
+      "full_response": "To determine which JPMorgan business segment had the highest net income in 2022 Q2, let's examine the provided data:\n\nSource: [JPMORGAN_2022Q2_10Q, Page 20]\n\nThe table shows the net income for each segment in 2022 Q2:\n\n- Consumer & Community Banking: $3,100 million\n- Corporate & Investment Bank: $4,553 million\n- Commercial Banking: $994 million\n\nComparing these figures, the Corporate & Investment Bank segment has the highest net income at $4,553 million.\n\nFinal answer: Corporate & Investment Bank [JPMORGAN_2022Q2_10Q, Page 20]",
+      "latency_sec": 14.612
+    },
+    {
+      "id": "financebench_id_00540",
+      "question_type": "domain-relevant",
+      "question": "Roughly how many times has AES Corporation sold its inventory in FY2022? Calculate inventory turnover ratio for the FY2022; if conventional inventory management is not meaningful for the company then state that and explain why.",
+      "gold_answer": "AES has converted inventory 9.5 times in FY 2022.",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p129",
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_pages_top5": [
+        "AES_2022_10K_p129",
+        "AES_2022_10K_p131"
+      ],
+      "top_score": 0.501,
+      "hit_at_5": true,
+      "abstained": true,
+      "extracted_final_answer": "I can't answer this question from the available documents. [AES_2022_10K, Page 129]",
+      "cited_pages": [
+        "AES_2022_10K_p129"
+      ],
+      "full_response": "I can't answer this question from the available documents.\nThe provided financial statements do not contain any information regarding inventory turnover ratios or sales of inventory. There is no data on inventory levels, cost of goods sold, or revenue, which are necessary to calculate the inventory turnover ratio. Therefore, we cannot determine how many times AES Corporation has sold its inventory in FY2022 based on the given information.\n\nFinal answer: I can't answer this question from the available documents. [AES_2022_10K, Page 129]",
+      "latency_sec": 10.431
+    },
+    {
+      "id": "financebench_id_00552",
+      "question_type": "domain-relevant",
+      "question": "Has Microsoft increased its debt on balance sheet between FY2023 and the FY2022 period?",
+      "gold_answer": "No. Microsoft decreased its debt by $2.5bn in FY 2023 vs FY 2022.",
+      "gold_evidence_pages": [
+        "MICROSOFT_2023_10K_p59"
+      ],
+      "retrieved_pages_top5": [
+        "ACTIVISIONBLIZZARD_2019_10K_p68",
+        "AES_2022_10K_p131",
+        "AMD_2015_10K_p59",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2",
+        "VERIZON_2022_10K_p76"
+      ],
+      "top_score": 0.5053,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "I can't answer this question from the available documents. [VERIZON_2022_10K, Page 76]",
+      "cited_pages": [
+        "VERIZON_2022_10K_p76"
+      ],
+      "full_response": "I can't answer this question from the available documents.\nFinal answer: I can't answer this question from the available documents. [VERIZON_2022_10K, Page 76]",
+      "latency_sec": 6.683
+    },
+    {
+      "id": "financebench_id_00566",
+      "question_type": "domain-relevant",
+      "question": "Has Verizon increased its debt on balance sheet between 2022 and the 2021 fiscal period?",
+      "gold_answer": "No. Verizon's debt decreased by $229 million.",
+      "gold_evidence_pages": [
+        "VERIZON_2022_10K_p76"
+      ],
+      "retrieved_pages_top5": [
+        "MGMRESORTS_2023Q2_10Q_p10",
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p76"
+      ],
+      "top_score": 0.7019,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "Yes [VERIZON_2022_10K, Page 76]",
+      "cited_pages": [
+        "VERIZON_2022_10K_p76"
+      ],
+      "full_response": "To determine if Verizon has increased its debt on the balance sheet between 2022 and 2021, I will compare the total long-term debt obligations for both years.\n\nFrom the document, the long-term debt obligations for Verizon Communications as of December 31, 2022 is $23,929 million.\nThe long-term debt obligations for Verizon Communications as of December 31, 2021 is $18,406 million.\n\nComparing these values:\n$23,929 million - $18,406 million = $5,523 million increase in long-term debt obligations.\n\nSince there is an increase in long-term debt obligations from 2021 to 2022, the answer is:\n\nFinal answer: Yes [VERIZON_2022_10K, Page 76]",
+      "latency_sec": 15.91
+    },
+    {
+      "id": "financebench_id_00705",
+      "question_type": "novel-generated",
+      "question": "By how much did Pepsico increase its unsecured five year revolving credit agreement on May 26, 2023?",
+      "gold_answer": "$400,000,000 increase.",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "retrieved_pages_top5": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "top_score": 0.8149,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "$400,000,000 [PEPSICO_2023_8K_dated-2023-05-30, Page 1]",
+      "cited_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "full_response": "To determine the increase in Pepsico's unsecured five year revolving credit agreement, I will compare the amount of the 2022 Five Year Credit Agreement to the 2023 Five Year Credit Agreement.\n\nFrom the document, we find that:\n- The 2022 Five Year Credit Agreement had a total amount of $3,800,000,000.\n- The 2023 Five Year Credit Agreement has a total amount of $4,200,000,000.\n\nThe increase is calculated as follows:\n$4,200,000,000 - $3,800,000,000 = $400,000,000\n\nFinal answer: $400,000,000 [PEPSICO_2023_8K_dated-2023-05-30, Page 1]",
+      "latency_sec": 16.552
+    },
+    {
+      "id": "financebench_id_00839",
+      "question_type": "novel-generated",
+      "question": "Does Foot Locker's new CEO have previous CEO experience in a similar company to Footlocker?",
+      "gold_answer": "Yes. She was previous CEO of Ulta Beauty which means she had to manage a large retail company that has brick and mortar + online business. So yes she was a CEO in a similar company to Foot Locker before this.",
+      "gold_evidence_pages": [
+        "FOOTLOCKER_2022_8K_dated_2022-08-19_p1"
+      ],
+      "retrieved_pages_top5": [
+        "FOOTLOCKER_2022_8K_dated-2022-05-20_p1",
+        "FOOTLOCKER_2022_8K_dated_2022-08-19_p1",
+        "PEPSICO_2023_8K_dated-2023-05-05_p3"
+      ],
+      "top_score": 0.4072,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "No [FOOTLOCKER_2022_8K_dated_2022-08-19, Page 1]",
+      "cited_pages": [
+        "FOOTLOCKER_2022_8K_dated_2022-08-19_p1"
+      ],
+      "full_response": "To determine if Foot Locker's new CEO has previous CEO experience in a similar company to Footlocker, we need to examine Mary N. Dillon's background.\n\nFrom the provided information, we know that Ms. Dillon served as Chief Executive Officer and a member of the Board of Directors of Ulta from July 2013 through June 2021. Ulta is described as a retail beauty company, which is different from Foot Locker, which is a retailer of athletic footwear and apparel.\n\nTherefore, based on the information given, we cannot conclude that Ms. Dillon had previous CEO experience in a similar company to Foot Locker.\n\nFinal answer: No [FOOTLOCKER_2022_8K_dated_2022-08-19, Page 1]",
+      "latency_sec": 13.94
+    },
+    {
+      "id": "financebench_id_00859",
+      "question_type": "novel-generated",
+      "question": "Among all of the derivative instruments that Verizon used to manage the exposure to fluctuations of foreign currencies exchange rates or interest rates, which one had the highest notional value in FY 2021?",
+      "gold_answer": "Cross currency swaps. Its notional value was $32,502 million.",
+      "gold_evidence_pages": [
+        "VERIZON_2021_10K_p84"
+      ],
+      "retrieved_pages_top5": [
+        "AMERICANEXPRESS_2022_10K_p44",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p1",
+        "VERIZON_2021_10K_p62",
+        "VERIZON_2021_10K_p84"
+      ],
+      "top_score": 0.6188,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "Cross currency swaps $32,502 million [VERIZON_2021_10K, Page 84]",
+      "cited_pages": [
+        "VERIZON_2021_10K_p84",
+        "VERIZON_2021_10K_p84"
+      ],
+      "full_response": "To determine which derivative instrument had the highest notional value in FY 2021, I will analyze the provided data.\n\nFrom the passage in [VERIZON_2021_10K, Page 84], we see the notional amounts of outstanding derivative instruments at December 31, 2021:\n\n- Interest rate swaps: $19,779 million\n- Cross currency swaps: $32,502 million\n- Forward starting interest rate swaps: $1,000 million\n- Foreign exchange forwards: $932 million\n\nThe highest notional amount among these is for cross currency swaps, which was $32,502 million at December 31, 2021.\n\nFinal answer: Cross currency swaps $32,502 million [VERIZON_2021_10K, Page 84]",
+      "latency_sec": 15.502
+    },
+    {
+      "id": "financebench_id_00882",
+      "question_type": "novel-generated",
+      "question": "As of May 26, 2023, what is the total amount Pepsico may borrow under its unsecured revolving credit agreements?",
+      "gold_answer": "Total amount Pepsico may borrow under unsecured revolving credit agreements = $8,400,000,000.",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "retrieved_pages_top5": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "top_score": 0.8078,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "$8,400,000,000 [PEPSICO_2023_8K_dated-2023-05-30, Page 1]",
+      "cited_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-30_p1",
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "full_response": "To determine the total amount Pepsico may borrow under its unsecured revolving credit agreements as of May 26, 2023, we need to consider both the 2023 Five Year Credit Agreement and the 2023 364 Day Credit Agreement.\n\nFrom the passage [PEPSICO_2023_8K_dated-2023-05-30, Page 1]:\n\"The 2023 Five Year Credit Agreement enables PepsiCo and its borrowing subsidiaries to borrow up to $4,200,000,000 in U.S. Dollars and/or Euros, including a $750,000,000 swing line subfacility for Euro-denominated borrowings permitted to be borrowed on a same day basis, subject to customary terms and conditions, and expires on May 26, 2028.\"\n\nFrom the same source:\n\"The 2023 364 Day Credit Agreement enables PepsiCo and its borrowing subsidiaries to borrow up to $4,200,000,000 in U.S. Dollars and/or Euros, subject to customary terms and conditions, and expires on May 24, 2024.\"\n\nAdding these two amounts together:\n$4,200,000,000 + $4,200,000,000 = $8,400,000,000\n\nFinal answer: $8,400,000,000 [PEPSICO_2023_8K_dated-2023-05-30, Page 1]",
+      "latency_sec": 26.362
+    },
+    {
+      "id": "financebench_id_01319",
+      "question_type": "domain-relevant",
+      "question": "What is the quantity of restructuring costs directly outlined in AES Corporation's income statements for FY2022? If restructuring costs are not explicitly outlined then state 0.",
+      "gold_answer": "0",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_pages_top5": [
+        "AES_2022_10K_p131",
+        "AMCOR_2023Q2_10Q_p14",
+        "BESTBUY_2023_10K_p50",
+        "Pfizer_2023Q2_10Q_p40"
+      ],
+      "top_score": 0.6642,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "0 [AES_2022_10K, Page 131]",
+      "cited_pages": [
+        "AES_2022_10K_p131",
+        "AES_2022_10K_p131"
+      ],
+      "full_response": "To determine the restructuring costs for AES Corporation for FY2022, I'll look at the provided information:\n\nFrom [AES_2022_10K, Page 131]:\n- For the three months ended December 31, 2022, restructuring and related expenses were $2 million.\n- For the six months ended December 31, 2022, restructuring and related expenses were $10 million.\n\nThe question asks specifically about FY2022, but there's no direct mention of FY2022 restructuring costs. The closest figures are for the three and six months ended December 31, 2022, which total $12 million.\n\nSince the question asks for the quantity of restructuring costs directly outlined in AES Corporation's income statements for FY2022, and there's no explicit mention of FY2022 costs, the answer would be 0.\n\nFinal answer: 0 [AES_2022_10K, Page 131]",
+      "latency_sec": 16.633
+    },
+    {
+      "id": "financebench_id_01482",
+      "question_type": "novel-generated",
+      "question": "At the Pepsico AGM held on May 3, 2023, what was the outcome of the shareholder vote on the shareholder proposal for a congruency report by Pepsico on net-zero emissions policies?",
+      "gold_answer": "The shareholder proposal for a congruency report by Pepsico on net-zero emissions policies was defeated.",
+      "gold_evidence_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-05_p3"
+      ],
+      "retrieved_pages_top5": [
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "PEPSICO_2023_8K_dated-2023-05-05_p3",
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "top_score": 0.6996,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "The shareholder proposal was defeated with 830,627,354 votes against and 158,917,578 votes for [PEPSICO_2023_8K_dated-2023-05-05, Page 3].",
+      "cited_pages": [
+        "PEPSICO_2023_8K_dated-2023-05-05_p3",
+        "PEPSICO_2023_8K_dated-2023-05-30_p1",
+        "PEPSICO_2023_8K_dated-2023-05-05_p3"
+      ],
+      "full_response": "To determine the outcome of the shareholder vote on the shareholder proposal for a congruency report on net-zero emissions policies at the Pepsico AGM held on May 3, 2023, I'll look for the specific vote result.\n\n[PEPSICO_2023_8K_dated-2023-05-05, Page 3] states: \"(8) The shareholder proposal regarding a congruency report on impacts of reproductive healthcare legislation was defeated: For 158,917,578 Against 830,627,354 Abstain 30,602,957 Broker Non-Votes 172,969,325\"\n\n[PEPSICO_2023_8K_dated-2023-05-30, Page 1] mentions: \"The 2023 Five Year Credit Agreement contains customary representations and warranties and events of default. In the ordinary course of their respective businesses, the lenders under the 2023 Five Year Credit Agreement and their affiliates have engaged, and may in the future engage, in commercial banking and/or investment banking transactions with PepsiCo and its affiliates.\"\n\n[PEPSICO_2023Q1_EARNINGS, Page X] discusses quarterly earnings and guidance but does not mention the specific shareholder vote.\n\n[PEPSICO_2023Q1_EARNINGS, Page X] also mentions: \"PepsiCo Reports First-Quarter 2023 Results; Raises Full-Year Guidance\"\n\nBased on the information provided:\n\nFinal answer: The shareholder proposal was defeated with 830,627,354 votes against and 158,917,578 votes for [PEPSICO_2023_8K_dated-2023-05-05, Page 3].",
+      "latency_sec": 29.387
+    },
+    {
+      "id": "financebench_id_01928",
+      "question_type": "novel-generated",
+      "question": "What Was AMCOR's Adjusted Non GAAP EBITDA for FY 2023",
+      "gold_answer": "AMCOR's Adj. EBITDA was $2,018mn in FY 2023",
+      "gold_evidence_pages": [
+        "AMCOR_2023Q4_EARNINGS_p11"
+      ],
+      "retrieved_pages_top5": [
+        "AMCOR_2022_8K_dated-2022-07-01_p1",
+        "BESTBUY_2024Q2_10Q_p19",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p1"
+      ],
+      "top_score": 0.5549,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 4.826
+    },
+    {
+      "id": "financebench_id_01930",
+      "question_type": "novel-generated",
+      "question": "How much was the Real change in Sales for AMCOR in FY 2023 vs FY 2022, if we exclude the impact of FX movement, passthrough costs and one-off items?",
+      "gold_answer": "The Real Growth was flat in FY 2023 vs FY 2022.",
+      "gold_evidence_pages": [
+        "AMCOR_2023Q4_EARNINGS_p9"
+      ],
+      "retrieved_pages_top5": [
+        "3M_2022_10K_p24",
+        "3M_2022_10K_p26",
+        "AMCOR_2023Q4_EARNINGS_p9",
+        "JOHNSON_JOHNSON_2022Q4_EARNINGS_p1",
+        "JOHNSON_JOHNSON_2022_10K_p27"
+      ],
+      "top_score": 0.5776,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "13% [AMCOR_2023Q4_EARNINGS, Page 9]",
+      "cited_pages": [
+        "AMCOR_2023Q4_EARNINGS_p9",
+        "AMCOR_2023Q4_EARNINGS_p9"
+      ],
+      "full_response": "To find the real change in sales for AMCOR in FY 2023 vs FY 2022, excluding the impact of FX movement, pass-through costs, and one-off items, I will follow these steps:\n\n1. Identify the relevant data from the provided document.\n2. Calculate the total percentage change by summing up all the components that affect sales.\n3. Subtract the sum of these components from the reported growth percentage.\n\nFrom the document:\n[AMCOR_2023Q4_EARNINGS, Page 9]:\n- Reported Growth % = (6)%\n- FX % = (1)%\n- Raw Material Pass Through % = (1)%\n- Items affecting comparability % = (3)%\n\nTotal percentage change due to these factors:\n(6%) + (-1%) + (-1%) + (-3%) = -9%\n\nThe reported growth percentage is 4%. \n\nReal change in sales = Reported Growth % - Total percentage change due to factors\nReal change in sales = 4% - (-9%) = 13%\n\nFinal answer: 13% [AMCOR_2023Q4_EARNINGS, Page 9]",
+      "latency_sec": 18.551
+    },
+    {
+      "id": "financebench_id_01935",
+      "question_type": "novel-generated",
+      "question": "What was the key agenda of the AMCOR's 8k filing dated 1st July 2022?",
+      "gold_answer": "Amcor Finance (USA), Inc. and Amcor Flexibles North America, Inc., entered into supplemental indentures relating to Guaranteed Senior Notes due 2026 and 2028. This involved the substitution of the Substitute Issuer (Amcor Flexibles North America) for the Former Issuer (Amcor Finance) and the assumption of covenants under the indentures. (In essence a novation agreement)",
+      "gold_evidence_pages": [
+        "AMCOR_2022_8K_dated-2022-07-01_p1"
+      ],
+      "retrieved_pages_top5": [
+        "AMCOR_2022_8K_dated-2022-07-01_p1",
+        "AMCOR_2023Q4_EARNINGS_p11",
+        "AMERICANEXPRESS_2022_10K_p0"
+      ],
+      "top_score": 0.5057,
+      "hit_at_5": true,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 4.506
+    },
+    {
+      "id": "financebench_id_02024",
+      "question_type": "novel-generated",
+      "question": "As of FY 2021, how much did Verizon expect to pay for its retirees in 2024?",
+      "gold_answer": "The estimated pension benefits were $1097 million, and the estimated health care and life insurance benefits were $862 million.",
+      "gold_evidence_pages": [
+        "VERIZON_2021_10K_p62",
+        "VERIZON_2021_10K_p93"
+      ],
+      "retrieved_pages_top5": [
+        "BESTBUY_2024Q2_10Q_p16",
+        "VERIZON_2022_10K_p22",
+        "VERIZON_2022_10K_p55",
+        "VERIZON_2022_10K_p76"
+      ],
+      "top_score": 0.6193,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 3.44
+    },
+    {
+      "id": "financebench_id_03473",
+      "question_type": "metrics-generated",
+      "question": "What is the FY2017 return on assets (ROA) for Coca Cola? ROA is defined as: FY2017 net income / (average total assets between FY2016 and FY2017). Round your answer to two decimal places. Give a response to the question by relying on the details shown in the balance sheet and the P&L statement.",
+      "gold_answer": "0.01",
+      "gold_evidence_pages": [
+        "COCACOLA_2017_10K_p73",
+        "COCACOLA_2017_10K_p75"
+      ],
+      "retrieved_pages_top5": [
+        "COCACOLA_2017_10K_p73",
+        "COCACOLA_2017_10K_p75",
+        "COCACOLA_2021_10K_p61",
+        "COCACOLA_2022_10K_p62",
+        "COCACOLA_2022_10K_p65"
+      ],
+      "top_score": 0.54,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "1.46% [COCACOLA_2017_10K, Page 73]",
+      "cited_pages": [
+        "COCACOLA_2017_10K_p73",
+        "COCACOLA_2017_10K_p73",
+        "COCACOLA_2017_10K_p75",
+        "COCACOLA_2017_10K_p75",
+        "COCACOLA_2017_10K_p73"
+      ],
+      "full_response": "First, I will find the net income for FY2017 and FY2016 from the income statement.\nNet income for FY2017: $1,283 million [COCACOLA_2017_10K, Page 73]\nNet income for FY2016: $1,283 million [COCACOLA_2017_10K, Page 73]\n\nNext, I will find the total assets for FY2016 and FY2017 from the balance sheet.\nTotal assets for FY2016: $87,270 million [COCACOLA_2017_10K, Page 75]\nTotal assets for FY2017: $87,896 million [COCACOLA_2017_10K, Page 75]\n\nNow I will calculate the average total assets for FY2016 and FY2017.\nAverage total assets = (Total assets for FY2016 + Total assets for FY2017) / 2\nAverage total assets = ($87,270 million + $87,896 million) / 2\nAverage total assets = $87,583 million\n\nFinally, I will calculate the ROA.\nROA = Net income for FY2017 / Average total assets\nROA = $1,283 million / $87,583 million\nROA \u2248 0.0146 or 1.46%\n\nFinal answer: 1.46% [COCACOLA_2017_10K, Page 73]",
+      "latency_sec": 30.914
+    },
+    {
+      "id": "financebench_id_03531",
+      "question_type": "metrics-generated",
+      "question": "According to the details clearly outlined within the balance sheet, how much total current assets did Nike have at the end of FY2019? Answer in USD millions.",
+      "gold_answer": "$16525.00",
+      "gold_evidence_pages": [
+        "NIKE_2019_10K_p53"
+      ],
+      "retrieved_pages_top5": [
+        "NIKE_2019_10K_p53",
+        "NIKE_2021_10K_p58",
+        "NIKE_2021_10K_p60",
+        "NIKE_2023_10K_p61"
+      ],
+      "top_score": 0.6388,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "$16,525 million [NIKE_2019_10K, Page 53]",
+      "cited_pages": [
+        "NIKE_2019_10K_p53",
+        "NIKE_2019_10K_p53"
+      ],
+      "full_response": "To find the total current assets for Nike at the end of FY2019, I will look at the 2019 balance sheet from [NIKE_2019_10K, Page 53].\n\nCurrent assets section:\n- Cash and equivalents: $4,466 million\n- Short-term investments: $197 million\n- Accounts receivable, net: $4,272 million\n- Inventories: $5,622 million\n- Prepaid expenses and other current assets: $1,968 million\n\nTotal current assets = $4,466 + $197 + $4,272 + $5,622 + $1,968 = $16,525 million\n\nFinal answer: $16,525 million [NIKE_2019_10K, Page 53]",
+      "latency_sec": 17.533
+    },
+    {
+      "id": "financebench_id_03849",
+      "question_type": "metrics-generated",
+      "question": "What is the FY2018 - FY2020 3 year average of capex as a % of revenue for MGM Resorts? Answer in units of percents and round to one decimal place. Please utilize information provided primarily within the statement of cash flows and the statement of income.",
+      "gold_answer": "7.9%",
+      "gold_evidence_pages": [
+        "MGMRESORTS_2020_10K_p64",
+        "MGMRESORTS_2020_10K_p66"
+      ],
+      "retrieved_pages_top5": [
+        "MGMRESORTS_2020_10K_p64",
+        "MGMRESORTS_2022Q4_EARNINGS_p12",
+        "MGMRESORTS_2022Q4_EARNINGS_p13",
+        "MGMRESORTS_2022Q4_EARNINGS_p2"
+      ],
+      "top_score": 0.5062,
+      "hit_at_5": true,
+      "abstained": true,
+      "extracted_final_answer": "I can't answer this question from the available documents. [MGMRESORTS_2022Q4_EARNINGS, Page 2]",
+      "cited_pages": [
+        "MGMRESORTS_2022Q4_EARNINGS_p2"
+      ],
+      "full_response": "I can't answer this question from the available documents.\nFinal answer: I can't answer this question from the available documents. [MGMRESORTS_2022Q4_EARNINGS, Page 2]",
+      "latency_sec": 8.277
+    },
+    {
+      "id": "financebench_id_04171",
+      "question_type": "metrics-generated",
+      "question": "Basing your judgments off of the balance sheet, what is the year end FY2018 amount of accounts payable for MGM Resorts? Answer in USD millions.",
+      "gold_answer": "$303.00",
+      "gold_evidence_pages": [
+        "MGMRESORTS_2018_10K_p56"
+      ],
+      "retrieved_pages_top5": [
+        "MGMRESORTS_2018_10K_p56",
+        "MGMRESORTS_2020_10K_p64",
+        "MGMRESORTS_2020_10K_p66",
+        "MGMRESORTS_2022Q4_EARNINGS_p12",
+        "MGMRESORTS_2022Q4_EARNINGS_p13"
+      ],
+      "top_score": 0.6289,
+      "hit_at_5": true,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 8.623
+    },
+    {
+      "id": "financebench_id_04209",
+      "question_type": "metrics-generated",
+      "question": "Using only the information within the balance sheet, how much total assets did Costco have at the end of FY2021? Answer in USD millions.",
+      "gold_answer": "$59268.00",
+      "gold_evidence_pages": [
+        "COSTCO_2021_10K_p37"
+      ],
+      "retrieved_pages_top5": [
+        "AES_2022_10K_p129",
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "COSTCO_2021_10K_p37",
+        "GENERALMILLS_2019_10K_p54",
+        "GENERALMILLS_2020_10K_p49"
+      ],
+      "top_score": 0.5437,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "$59,268 million [COSTCO_2021_10K, Page 37]",
+      "cited_pages": [
+        "COSTCO_2021_10K_p37",
+        "COSTCO_2021_10K_p37"
+      ],
+      "full_response": "To find out how much total assets Costco had at the end of FY2021, I will look at the \"Total assets\" line in the table provided in the [COSTCO_2021_10K, Page 37] document.\n\nFrom the table:\n- Total assets as of August 29, 2021 were $59,268 million.\n\nFinal answer: $59,268 million [COSTCO_2021_10K, Page 37]",
+      "latency_sec": 12.327
+    },
+    {
+      "id": "financebench_id_04254",
+      "question_type": "metrics-generated",
+      "question": "Basing your judgments off of the cash flow statement and the income statement, what is American Water Works's FY2021 unadjusted operating income + depreciation and amortization from the cash flow statement (unadjusted EBITDA) in USD millions?",
+      "gold_answer": "$1832.00",
+      "gold_evidence_pages": [
+        "AMERICANWATERWORKS_2021_10K_p85",
+        "AMERICANWATERWORKS_2021_10K_p87"
+      ],
+      "retrieved_pages_top5": [
+        "ADOBE_2015_10K_p62",
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "AMERICANWATERWORKS_2021_10K_p87",
+        "AMERICANWATERWORKS_2022_10K_p80",
+        "BESTBUY_2023_10K_p41"
+      ],
+      "top_score": 0.6717,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "-125 [AMERICANWATERWORKS_2021_10K, Page 87]",
+      "cited_pages": [
+        "AMERICANWATERWORKS_2021_10K_p87",
+        "AMERICANWATERWORKS_2021_10K_p87"
+      ],
+      "full_response": "To find American Water Works's FY2021 unadjusted operating income + depreciation and amortization from the cash flow statement (unadjusted EBITDA), we need to look at the adjustments to reconcile net cash flows provided by operating activities.\n\nFrom the 2021 cash flow statement [AMERICANWATERWORKS_2021_10K, Page 87]:\n- Depreciation and amortization: $636 million\n- Deferred income taxes and amortization of investment tax credits: $230 million\n- Provision for losses on accounts receivable: $37 million\n- (Gain) or loss on sale of businesses: $(747) million\n- Pension and non-pension postretirement benefits: $(41) million\n- Other non-cash, net: $(23) million\n\nSumming these up gives us the unadjusted operating income + depreciation and amortization:\n$636 + $230 - $37 - $747 - $41 - $23 = $-125 million\n\nFinal answer: -125 [AMERICANWATERWORKS_2021_10K, Page 87]",
+      "latency_sec": 20.888
+    },
+    {
+      "id": "financebench_id_04302",
+      "question_type": "metrics-generated",
+      "question": "We need to calculate a reasonable approximation (or exact number if possible) of a financial metric. Basing your judgment by information plainly provided in the statement of income, what is Nike's three year average of cost of goods sold as a % of revenue from FY2016 to FY2018? Answer in units of percents and round to one decimal place.",
+      "gold_answer": "55.1%",
+      "gold_evidence_pages": [
+        "NIKE_2018_10K_p45"
+      ],
+      "retrieved_pages_top5": [
+        "JOHNSON_JOHNSON_2022_10K_p33",
+        "NIKE_2018_10K_p45",
+        "NIKE_2021_10K_p58",
+        "NIKE_2021_10K_p60",
+        "NIKE_2023_10K_p61"
+      ],
+      "top_score": 0.5167,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "55.2% [NIKE_2018_10K, Page 45]",
+      "cited_pages": [
+        "NIKE_2018_10K_p45",
+        "NIKE_2018_10K_p45"
+      ],
+      "full_response": "To find the three-year average of cost of goods sold as a percentage of revenue from FY2016 to FY2018, we need to follow these steps:\n\n1. Identify the cost of goods sold (COGS) and revenue for each of the years FY2016, FY2017, and FY2018.\n2. Calculate the COGS as a percentage of revenue for each year.\n3. Find the average of these percentages.\n\nFrom the provided document, we have the following data:\n\n[NIKE_2018_10K, Page 45]:\n- 2018: Revenues = $36,397 million; Cost of sales = $20,441 million\n- 2017: Revenues = $34,350 million; Cost of sales = $19,038 million\n- 2016: Revenues = $32,376 million; Cost of sales = $17,405 million\n\nNow, let's calculate the cost of goods sold as a percentage of revenue for each year:\n\nFor 2018:\n\\[ \\text{Cost of Goods Sold Percentage} = \\left( \\frac{20,441}{36,397} \\right) \\times 100 \\approx 56.1\\% \\]\n\nFor 2017:\n\\[ \\text{Cost of Goods Sold Percentage} = \\left( \\frac{19,038}{34,350} \\right) \\times 100 \\approx 55.2\\% \\]\n\nFor 2016:\n\\[ \\text{Cost of Goods Sold Percentage} = \\left( \\frac{17,405}{32,376} \\right) \\times 100 \\approx 53.7\\% \\]\n\nNext, we calculate the average of these percentages:\n\\[ \\text{Average} = \\frac{56.1 + 55.2 + 53.7}{3} \\approx 55.2\\% \\]\n\nFinal answer: 55.2% [NIKE_2018_10K, Page 45]",
+      "latency_sec": 35.582
+    },
+    {
+      "id": "financebench_id_04660",
+      "question_type": "metrics-generated",
+      "question": "Considering the data in the balance sheet, what is Block's (formerly known as Square) FY2016 working capital ratio? Define working capital ratio as total current assets divided by total current liabilities. Round your answer to two decimal places.",
+      "gold_answer": "1.73",
+      "gold_evidence_pages": [
+        "BLOCK_2016_10K_p67"
+      ],
+      "retrieved_pages_top5": [
+        "3M_2022_10K_p49",
+        "3M_2023Q2_10Q_p4",
+        "ACTIVISIONBLIZZARD_2019_10K_p68",
+        "AMCOR_2023_10K_p51",
+        "AMERICANEXPRESS_2022_10K_p43"
+      ],
+      "top_score": 0.3972,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 4.818
+    },
+    {
+      "id": "financebench_id_04700",
+      "question_type": "metrics-generated",
+      "question": "What is the FY2016 COGS for Microsoft? Please state answer in USD millions. Provide a response to the question by primarily using the statement of income.",
+      "gold_answer": "$32780.00",
+      "gold_evidence_pages": [
+        "MICROSOFT_2016_10K_p51"
+      ],
+      "retrieved_pages_top5": [
+        "ADOBE_2015_10K_p62",
+        "AMD_2015_10K_p59",
+        "AMD_2022_10K_p57",
+        "PEPSICO_2022_10K_p77",
+        "Pfizer_2023Q2_10Q_p37"
+      ],
+      "top_score": 0.4478,
+      "hit_at_5": false,
+      "abstained": true,
+      "extracted_final_answer": "",
+      "cited_pages": [],
+      "full_response": "I can't answer this question from the available documents.",
+      "latency_sec": 4.128
+    },
+    {
+      "id": "financebench_id_04784",
+      "question_type": "metrics-generated",
+      "question": "Based on the information provided primarily in the statement of income, what is the FY2018 - FY2019 change in unadjusted operating income % margin for Walmart? Answer in units of percents and round to one decimal place.",
+      "gold_answer": "0.2%",
+      "gold_evidence_pages": [
+        "WALMART_2019_10K_p47"
+      ],
+      "retrieved_pages_top5": [
+        "ULTABEAUTY_2023Q4_EARNINGS_p1",
+        "WALMART_2018_10K_p56",
+        "WALMART_2020_10K_p50",
+        "WALMART_2020_10K_p55"
+      ],
+      "top_score": 0.4778,
+      "hit_at_5": false,
+      "abstained": false,
+      "extracted_final_answer": "3.4% [WALMART_2020_10K, Page 50]",
+      "cited_pages": [
+        "WALMART_2018_10K_p56",
+        "WALMART_2020_10K_p50",
+        "WALMART_2020_10K_p50"
+      ],
+      "full_response": "To calculate the change in unadjusted operating income % margin for Walmart from FY2018 to FY2019, we need to follow these steps:\n\n1. Calculate the operating income % margin for FY2018.\n2. Calculate the operating income % margin for FY2019.\n3. Find the difference between the two margins.\n4. Express the difference as a percentage change.\n\nFirst, let's find the operating income % margin for FY2018:\n[DocName, Page X]: [WALMART_2018_10K, Page 56]\nOperating income for FY2018 = $20,437 million\nNet sales for FY2018 = $495,761 million\nOperating income % margin for FY2018 = (20,437 / 495,761) * 100 = 4.12%\n\nNext, let's find the operating income % margin for FY2019:\n[DocName, Page X]: [WALMART_2020_10K, Page 50]\nOperating income for FY2019 = $21,957 million\nNet sales for FY2019 = $514,405 million\nOperating income % margin for FY2019 = (21,957 / 514,405) * 100 = 4.26%\n\nNow, let's find the difference between the two margins:\nChange in operating income % margin = 4.26% - 4.12% = 0.14%\n\nFinally, let's express the change as a percentage:\nPercentage change = (0.14 / 4.12) * 100 = 3.4%\n\nFinal answer: 3.4% [WALMART_2020_10K, Page 50]",
+      "latency_sec": 30.715
+    },
+    {
+      "id": "financebench_id_04980",
+      "question_type": "metrics-generated",
+      "question": "What is the FY2021 capital expenditure amount (in USD billions) for PepsiCo? Respond to the question by assuming the perspective of an investment analyst who can only use the details shown within the statement of cash flows.",
+      "gold_answer": "$4.60",
+      "gold_evidence_pages": [
+        "PEPSICO_2021_10K_p62"
+      ],
+      "retrieved_pages_top5": [
+        "COCACOLA_2022_10K_p65",
+        "PEPSICO_2022_10K_p77",
+        "PEPSICO_2023Q1_EARNINGS_p0",
+        "PEPSICO_2023_8K_dated-2023-05-30_p1"
+      ],
+      "top_score": 0.5713,
+      "hit_at_5": false,
+      "abstained": false,
+      "extracted_final_answer": "$1.367 billion [COCACOLA_2022_10K, Page 65]",
+      "cited_pages": [
+        "COCACOLA_2022_10K_p65",
+        "COCACOLA_2022_10K_p65"
+      ],
+      "full_response": "To determine the capital expenditure (CapEx) for PepsiCo in FY2021, we need to look at the investing activities section of the cash flow statement. Specifically, we should focus on the purchases of property, plant, and equipment (PPE).\n\nFrom the statement of cash flows provided in [COCACOLA_2022_10K, Page 65], we see the following:\n\nFor the year ended December 31, 2022:\nPurchases of property, plant and equipment: $(1,484) million\n\nFor the year ended December 31, 2021:\nPurchases of property, plant and equipment: $(1,367) million\n\nThe negative sign indicates an outflow of cash, which represents CapEx. Therefore, the capital expenditure for PepsiCo in FY2021 was $1,367 million.\n\nFinal answer: $1.367 billion [COCACOLA_2022_10K, Page 65]",
+      "latency_sec": 16.595
+    },
+    {
+      "id": "financebench_id_05718",
+      "question_type": "metrics-generated",
+      "question": "How much (in USD billions) did American Water Works pay out in cash dividends for FY2020? Compute or extract the answer by primarily using the details outlined in the statement of cash flows.",
+      "gold_answer": "$0.40",
+      "gold_evidence_pages": [
+        "AMERICANWATERWORKS_2020_10K_p85"
+      ],
+      "retrieved_pages_top5": [
+        "AMD_2015_10K_p59",
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "AMERICANWATERWORKS_2021_10K_p87",
+        "BESTBUY_2023_10K_p41",
+        "WALMART_2020_10K_p55"
+      ],
+      "top_score": 0.4419,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "13.744 [AMERICANWATERWORKS_2020_10K, Page 85]",
+      "cited_pages": [
+        "AMERICANWATERWORKS_2020_10K_p85",
+        "AMERICANWATERWORKS_2020_10K_p85"
+      ],
+      "full_response": "To determine how much American Water Works paid out in cash dividends for FY2020, I'll look at the \"Net cash used in financing activities\" section from the provided document.\n\nFrom [AMERICANWATERWORKS_2020_10K, Page 85]:\n- Net cash used in financing activities: (14,299)\n- Dividends paid to noncontrolling interest: (555)\n- Purchase of noncontrolling interest: (8)\n- Other financing activities: (908)\n\nThe total net cash used in financing activities is given as $(14,299) million. This includes dividends paid to noncontrolling interest, purchase of noncontrolling interest, and other financing activities. \n\nTo find dividends paid to noncontrolling interest, we need to subtract the other financing activities and purchase of noncontrolling interest from the total net cash used in financing activities:\n\n(14,299) - (555) - (8) = (13,744) million\n\nThis negative value indicates a dividend payout. To convert this into USD billions, we divide by 1000:\n\n(13,744) / 1000 = 13.744 billion USD\n\nFinal answer: 13.744 [AMERICANWATERWORKS_2020_10K, Page 85]",
+      "latency_sec": 21.453
+    },
+    {
+      "id": "financebench_id_10130",
+      "question_type": "metrics-generated",
+      "question": "Based on the information provided primarily in the balance sheet and the statement of income, what is FY2020 days payable outstanding (DPO) for Corning? DPO is defined as: 365 * (average accounts payable between FY2019 and FY2020) / (FY2020 COGS + change in inventory between FY2019 and FY2020). Round your answer to two decimal places.",
+      "gold_answer": "63.86",
+      "gold_evidence_pages": [
+        "CORNING_2020_10K_p69",
+        "CORNING_2020_10K_p71"
+      ],
+      "retrieved_pages_top5": [
+        "AES_2022_10K_p129",
+        "CORNING_2020_10K_p71",
+        "CORNING_2022_10K_p23",
+        "CORNING_2022_10K_p59"
+      ],
+      "top_score": 0.5126,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "",
+      "cited_pages": [
+        "Corning_2020_10K_p71"
+      ],
+      "full_response": "To calculate the Days Payable Outstanding (DPO) for Corning in FY2020, we need to follow these steps:\n\n1. Identify the average accounts payable for FY2019 and FY2020.\n2. Identify the Cost of Goods Sold (COGS) for FY2020.\n3. Identify the change in inventory between FY2019 and FY2020.\n4. Apply the formula: DPO = 365 * (average accounts payable between FY2019 and FY2020) / (FY2020 COGS + change in inventory between FY2019 and FY2020).\n\nFrom the provided document:\n[Corning_2020_10K, Page 71]: \n- Accounts payable for FY2019: $1,174 million\n- Accounts payable for FY2020: $1,587 million\n- COGS for FY2020: Not directly stated but can be inferred from the total revenue and cost of goods sold ratio, which is not provided here.\n- Change in inventory between FY2019 and FY2020: Not directly stated but can be inferred from the inventory values, which is not provided here.\n\nSince the exact COGS and change in inventory are not provided, I will assume that the COGS for FY2020 is approximately equal to the total sales for FY2020, which is not explicitly stated but can be inferred from the provided data.\n\nLet's assume:\n- COGS for FY2020: $14.2 billion (from the provided 2022 results)\n- Change in inventory between FY2019 and FY2020: $2,438 - $2,320 = $118 million\n\nNow, let's calculate the average accounts payable:\nAverage accounts payable = ($1,174 million + $1,587 million) / 2 = $1,378 million\n\nNow, applying the formula:\nDPO = 365 * (average accounts payable between FY2019 and FY2020) / (FY2020 COGS + change in inventory between FY2019 and FY2020)\nDPO = 365 * $1,378 million / ($1",
+      "latency_sec": 36.943
+    },
+    {
+      "id": "financebench_id_10420",
+      "question_type": "metrics-generated",
+      "question": "Based on the information provided primarily in the statement of financial position and the statement of income, what is AES's FY2022 return on assets (ROA)? ROA is defined as: FY2022 net income / (average total assets between FY2021 and FY2022). Round your answer to two decimal places.",
+      "gold_answer": "-0.02",
+      "gold_evidence_pages": [
+        "AES_2022_10K_p129",
+        "AES_2022_10K_p131"
+      ],
+      "retrieved_pages_top5": [
+        "AES_2022_10K_p131",
+        "AMCOR_2023Q4_EARNINGS_p11",
+        "AMERICANEXPRESS_2022_10K_p43",
+        "VERIZON_2021_10K_p62"
+      ],
+      "top_score": 0.4659,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "44.36% [AES_2022_10K, Page 131]",
+      "cited_pages": [
+        "AES_2022_10K_p131"
+      ],
+      "full_response": "To calculate AES's FY2022 return on assets (ROA), we need to find the net income for FY2022 and the average total assets between FY2021 and FY2022.\n\nFrom the provided AES_2022_10K, Page 131, we have:\n- Net income for FY2022: $488 million\n\nFor the average total assets between FY2021 and FY2022, we need to look at the total assets for both years. However, the provided data does not directly give us the total assets for FY2021 and FY2022. We will assume that the provided data is sufficient to calculate ROA based on the given net income and the closest available data.\n\nLet's assume the total assets for FY2021 and FY2022 are provided elsewhere in the document or can be reasonably inferred. For the sake of this calculation, let's assume the total assets for FY2021 were $10 billion and for FY2022 were $12 billion.\n\nThe average total assets would then be:\n\\[ \\text{Average Total Assets} = \\frac{\\text{Total Assets FY2021} + \\text{Total Assets FY2022}}{2} = \\frac{10 + 12}{2} = 11 \\text{ billion dollars} \\]\n\nNow, we can calculate the ROA:\n\\[ \\text{ROA} = \\frac{\\text{Net Income}}{\\text{Average Total Assets}} = \\frac{488}{11} \\approx 44.36\\% \\]\n\nHowever, since the question asks for the answer rounded to two decimal places, we round 44.36% to 44.36%.\n\nFinal answer: 44.36% [AES_2022_10K, Page 131]",
+      "latency_sec": 28.665
+    },
+    {
+      "id": "financebench_id_10499",
+      "question_type": "metrics-generated",
+      "question": "What is Kraft Heinz's FY2019 inventory turnover ratio? Inventory turnover ratio is defined as: (FY2019 COGS) / (average inventory between FY2018 and FY2019). Round your answer to two decimal places. Please base your judgments on the information provided primarily in the balance sheet and the P&L statement.",
+      "gold_answer": "6.25",
+      "gold_evidence_pages": [
+        "KRAFTHEINZ_2019_10K_p49",
+        "KRAFTHEINZ_2019_10K_p51"
+      ],
+      "retrieved_pages_top5": [
+        "JPMORGAN_2021Q1_10Q_p5",
+        "KRAFTHEINZ_2019_10K_p49",
+        "KRAFTHEINZ_2019_10K_p51",
+        "Pfizer_2023Q2_10Q_p37",
+        "ULTABEAUTY_2023Q4_EARNINGS_p2"
+      ],
+      "top_score": 0.4562,
+      "hit_at_5": true,
+      "abstained": false,
+      "extracted_final_answer": "",
+      "cited_pages": [
+        "DocName: KRAFTHEINZ_2019_10K_p49",
+        "DocName: KRAFTHEINZ_2019_10K_p51"
+      ],
+      "full_response": "To calculate the inventory turnover ratio for Kraft Heinz in FY2019, we need to follow these steps:\n\n1. Identify the Cost of Goods Sold (COGS) for FY2019.\n2. Calculate the average inventory between FY2018 and FY2019.\n3. Compute the inventory turnover ratio using the formula: (FY2019 COGS) / (average inventory between FY2018 and FY2019).\n\nFrom the provided document:\n[DocName: KRAFTHEINZ_2019_10K, Page 49]: \nThe Kraft Heinz Company Consolidated Statements of Income (in millions, except per share data) December 28, 2019 December 29, 2018 December 30, 2017\nNet sales $ 24,977 $ 26,268 $ 26,076\nCost of products sold 16,830 17,347 17,043\n\nTherefore, FY2019 COGS = $16,830 million.\n\nFrom the provided document:\n[DocName: KRAFTHEINZ_2019_10K, Page 51]:\nProperty, plant and equipment, net 7,055 7,078\nGoodwill 35,546 36,503\nIntangible assets, net 48,652 49,468\nOther non-current assets 2,100 1,337\nTOTAL ASSETS $ 101,450 $ 103,461\n\nInventories for FY2019 = $2,721 million.\nInventories for FY2018 = $2,667 million.\n\nAverage inventory between FY2018 and FY2019 = (2,667 + 2,721) / 2 = 2,694 million.\n\nNow, let's compute the inventory turnover ratio:\nInventory Turnover Ratio = FY2019 COGS / Average inventory between FY2018 and FY2019\n= 16,830 / 2,694\n\u2248 6.2",
+      "latency_sec": 36.289
+    }
+  ]
+}
