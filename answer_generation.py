@@ -1,11 +1,11 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
-from hybrid_retrieve_rerank import HybridRetrieveRerank
+from dense_index import DenseIndex, DEFAULT_INDEX_DIR
 
 INSUFFICIENT_EVIDENCE_RESPONSE = (
     "I can't answer this question from the available documents."
 )
-DEFAULT_MIN_EVIDENCE_SCORE = -3.0
+DEFAULT_MIN_EVIDENCE_SCORE = 0.28
 
 class QwenGeneratorRetail:
     def __init__(
@@ -15,7 +15,7 @@ class QwenGeneratorRetail:
     ):
         print(f"Loading Qwen Hugging Face Model: {model_id}")
 
-        self.docRetriever = HybridRetrieveRerank()
+        self.docRetriever = DenseIndex.load(DEFAULT_INDEX_DIR)
         self.min_evidence_score = min_evidence_score
 
         if torch.cuda.is_available():
@@ -40,22 +40,22 @@ class QwenGeneratorRetail:
             model=self.model,
             tokenizer=self.tokenizer,
             max_new_tokens=512,
-            temperature=0.1,
-            do_sample=True,
+            temperature=0.0,
+            do_sample=False,
             device=None,
         )
 
     def generate(self, query: str, top_k: int = 5) -> str:
         retrieved_chunks = self.docRetriever.search(
             query,
-            top_res=top_k,
+            k=top_k,
         )
 
         if not retrieved_chunks:
             print("-> No retrieved evidence found.")
             return INSUFFICIENT_EVIDENCE_RESPONSE
 
-        best_score = retrieved_chunks[0].get("hybrid_score")
+        best_score = retrieved_chunks[0].get("score")
 
         if best_score is None:
             print("-> Retrieval result is missing a hybrid score.")
